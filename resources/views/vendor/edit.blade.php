@@ -145,6 +145,21 @@
                 </div>
 
                 <div class="form-group">
+                  <label for="tahun_terdaftar" class="col-sm-2 control-label">Tahun terdaftar</label>
+
+                  <div class="col-sm-2">
+                    <select class="form-control" name="tahun_terdaftar" id="tahun_terdaftar">
+                  
+                    {{$current_year = date("Y")}}
+                      
+                    @for ($tahun = 1980; $tahun <= $current_year ; $tahun++)
+                        <option value={{$tahun}} {{ $vendor->tahun_terdaftar == $tahun ? 'selected' : '' }}>{{$tahun}}</option>
+                    @endfor
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-group">
                   <label for="JenisKantor" class="col-sm-2 control-label">Jenis Kantor</label>
 
                   <div class="col-sm-2">
@@ -260,6 +275,15 @@
                       
                     </div>
 
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="fax" class="col-sm-2 control-label">Keterangan</label>
+
+                  <div class="col-sm-2">
+                    <textarea rows="4" cols="50" name="keterangan" id="keterangan">{{$vendor->keterangan}}
+                    </textarea>
                   </div>
                 </div>
 

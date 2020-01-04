@@ -280,9 +280,7 @@
                   <label for="fax" class="col-sm-2 control-label">Keterangan</label>
 
                   <div class="col-sm-2">
-                    <textarea rows="4" cols="50" name="keterangan" id="keterangan">
-                      
-                    </textarea>
+                    <textarea rows="4" cols="50" name="keterangan" id="keterangan"></textarea>
                   </div>
                 </div>
 

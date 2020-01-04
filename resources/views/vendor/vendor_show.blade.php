@@ -218,6 +218,16 @@
                         </tr>
 
                         <tr>
+                          <td><b>Tahun terdaftar</b></td>
+                          <td>
+                            <div>
+                              {{$vendor->tahun_terdaftar}}
+                            </div>
+                          </td>
+                          <!-- <td><span class="badge bg-red">55%</span></td> -->
+                        </tr>
+
+                        <tr>
                           <td><b>Telepon 1</b></td>
                           <td>
                             <div>
@@ -312,6 +322,15 @@
                         </tr>
                         @endif
                         
+                        <tr>
+                          <td><b>Keterangan</b></td>
+                          <td>
+                            <div>
+                            {{$vendor->keterangan}}
+                            </div>
+                          </td>
+                          <!-- <td><span class="badge bg-red">55%</span></td> -->
+                        </tr>
 
                         <tr>
                           <td><b>Created at</b></td>

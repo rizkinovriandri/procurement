@@ -210,11 +210,12 @@ class VendorsController extends Controller
         $vendor->fax = $request->input('fax');
         $vendor->email = $request->input('email');
         $vendor->kualifikasi = $request->input('kualifikasi');
+        $vendor->tahun_terdaftar = $request->input('tahun_terdaftar');
         $vendor->type = $request->input('bidang');
         $vendor->website = $request->input('website');
         $vendor->k3l = $request->input('k3l');
         $vendor->hubungan_keluarga = $request->input('keluarga');
-
+        $vendor->keterangan = $request->input('keterangan');    
        
 
         if ($tempkeluarga == 1) {
