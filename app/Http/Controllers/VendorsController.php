@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Akta;
+use App\Status;
 use App\role_user;
 use App\Vendor;
 use Auth;
@@ -89,7 +90,7 @@ class VendorsController extends Controller
     {
         //storing data vendor
        
-       $tempkeluarga = $request->input('keluarga');
+        $tempkeluarga = $request->input('keluarga');
 
         $vendor = new Vendor;
         $vendor->nama = $request->input('NamaPerusahaan');
@@ -105,10 +106,12 @@ class VendorsController extends Controller
         $vendor->fax = $request->input('fax');
         $vendor->email = $request->input('email');
         $vendor->type = $request->input('bidang');
+        $vendor->tahun_terdaftar = $request->input('tahun_terdaftar');
         $vendor->kualifikasi = $request->input('kualifikasi');
         $vendor->website = $request->input('website');
         $vendor->k3l = $request->input('k3l');
         $vendor->hubungan_keluarga = $request->input('keluarga');
+        $vendor->keterangan = $request->input('keterangan');
 
          if ($tempkeluarga == 1) {
             $vendor->nama_keluarga = $request->input('nama_pegawai');
@@ -120,6 +123,13 @@ class VendorsController extends Controller
 
         $vendor->created_by = Auth::user()->name;
         $vendor->save();
+
+        $lastInsertedId= $vendor->id;
+
+        $status_vendor = new Status;
+        $status_vendor->vendor_id = $lastInsertedId;
+        $status_vendor->status = "Pemasok Baru";
+        $status_vendor->save();
 
 
         return redirect('/vendors')->with('success','Vendor Created');
