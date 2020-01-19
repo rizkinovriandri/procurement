@@ -99,6 +99,23 @@ class PengurusController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'Nama' => 'required',
+            'Jabatan' => 'required',
+        ]);
+
+
+        $pengurus = Pengurus::find($request->pengurus_id);
+        $vendor_id = $pengurus->vendor_id;
+        $pengurus->nama = $request->input('Nama');
+        $pengurus->jabatan = $request->input('Jabatan');
+        $pengurus->no_telepon = $request->input('NomorTelepon');
+        $pengurus->no_hp = $request->input('NomorHp');
+        $pengurus->email = $request->input('email');
+        
+        $pengurus->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data Pengurus Updated');
     }
 
     /**

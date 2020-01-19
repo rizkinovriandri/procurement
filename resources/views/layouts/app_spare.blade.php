@@ -66,6 +66,8 @@
   <link rel="stylesheet" href="{{url('adminlte/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
  
 
+ 
+
 
   <style>
         .container-fluid {
@@ -322,6 +324,7 @@
 
 <!-- jQuery 3 -->
 <script src="{{url('adminlte/bower_components/jquery/dist/jquery.min.js')}}"></script>
+
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
@@ -612,7 +615,39 @@
       $('.timepicker').timepicker({
         showInputs: false
       })
-    })
+    })  
+
   </script>
+
+  
+
+    <script>
+          //[start] script modal edit pengurus
+        $('#modal-edit').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var name = button.data('name') // Extract info from data-* attributes
+        var pengurus_id = button.data('pengurus_id')
+        var jabatan = button.data('jabatan')
+        var no_telepon = button.data('no_telepon')
+        var no_hp = button.data('no_hp')
+        var email = button.data('email')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body #Nama').val(name)
+        modal.find('.modal-body #Jabatan').val(jabatan)
+        modal.find('.modal-body #NomorTelepon').val(no_telepon)
+        modal.find('.modal-body #NomorHp').val(no_hp)
+        modal.find('.modal-body #email').val(email)
+        modal.find('.modal-body #pengurus_id').val(pengurus_id)
+        })
+        //[end] scrip modal edit pengurus
+
+    </script>
+
 </body>
 </html>
