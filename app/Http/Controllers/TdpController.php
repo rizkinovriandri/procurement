@@ -116,6 +116,52 @@ class TdpController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NomorDokumen' => 'required',
+            'TanggalPenerbitan' => 'required',
+            'InstansiPenerbit' => 'required',
+
+            'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
+            
+            ]);
+
+        $tgl_tdp = $request->input('TanggalPenerbitan');
+        $tgl_berlaku = $request->input('MasaBerlaku');
+
+        $tdp = Tdp::find($request->id_tdp);
+        $vendor_id = $tdp->vendor_id;
+        $tdp->no_dokumen = $request->input('NomorDokumen');
+        $tdp->tgl_penerbitan = Carbon::parse($tgl_tdp)->format('Y-m-d H:i:s');
+        $tdp->instansi_penerbit = $request->input('InstansiPenerbit');
+        $tdp->masa_berlaku_status = $request->input('MasaBerlakuStatus');
+        $tdp->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('FileTdp')){ 
+            $file = $request->file('FileTdp');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'tdp';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/tdp/'.$tdp->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $tdp->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
+
+
+        $tdp->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data TDP Updated');
+
     }
 
     /**

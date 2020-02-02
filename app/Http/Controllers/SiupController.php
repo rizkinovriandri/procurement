@@ -117,6 +117,50 @@ class SiupController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NomorDokumen' => 'required',
+            'TanggalPenerbitan' => 'required',
+            'InstansiPenerbit' => 'required',
+
+            'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1', 
+        ]);
+
+        $tgl_siup = $request->input('TanggalPenerbitan');
+        $tgl_berlaku = $request->input('MasaBerlaku');
+
+        $siup = Siup::find($request->id_siup);
+        $vendor_id = $siup->vendor_id;
+        $siup->jenis_izin = $request->input('JenisIzin');
+        $siup->no_dokumen = $request->input('NomorDokumen');
+        $siup->tgl_penerbitan = Carbon::parse($tgl_siup)->format('Y-m-d H:i:s');
+        $siup->instansi_penerbit = $request->input('InstansiPenerbit');
+        $siup->masa_berlaku_status = $request->input('MasaBerlakuStatus');
+        $siup->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('FileSiup')){ 
+            $file = $request->file('FileSiup');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siupnib';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/siupnib/'.$siup->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $siup->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
+
+        $siup->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data SIUP / NIB Updated');
     }
 
     /**

@@ -68,7 +68,7 @@ class AktasController extends Controller
         $akta->nomor = $request->input('NomorAkta');
         $akta->tgl_akta = Carbon::parse($tgl_akta)->format('Y-m-d H:i:s');
 
-        $fileName = md5(time()) . '.' . $extension;;
+        $fileName = md5(time()) . '.' . $extension;
         // $fileName = $akta->getNextId();
         $akta->filename = $fileName;
         
@@ -113,6 +113,47 @@ class AktasController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'NamaNotaris' => 'required',
+            'NomorAkta' => 'required',
+            'TanggalAkta' => 'required',
+        ]);
+
+        
+
+        $tgl_akta = $request->input('TanggalAkta');
+
+        $akta = Akta::find($request->id_akta);
+        $vendor_id = $akta->vendor_id;
+        $akta->jenis = $request->input('JenisAkta');
+        $akta->nama_notaris = $request->input('NamaNotaris');
+        $akta->nomor = $request->input('NomorAkta');
+        $akta->tgl_akta = Carbon::parse($tgl_akta)->format('Y-m-d H:i:s');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('FileAkta')){ 
+            $file = $request->file('FileAkta');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'akta';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/akta/'.$akta->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $akta->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
+        
+        $akta->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data Akta Updated');
     }
 
     /**
@@ -134,7 +175,8 @@ class AktasController extends Controller
         //File::delete($file_path);
         $tabname = 'akta';
         $akta->delete();
-        
-        return redirect('/vendors/'.$vendor_id)->with(['activetab'=>$tabname], 'success','Akta Deleted');
+
+        return redirect('/vendors/'.$vendor_id)->with('success','Akta Deleted');
+        //return redirect('/vendors/'.$vendor_id)->with(['activetab'=>$tabname], 'success','Akta Deleted');
     }
 }

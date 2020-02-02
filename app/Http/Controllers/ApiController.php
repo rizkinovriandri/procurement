@@ -115,6 +115,51 @@ class ApiController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NomorDokumen' => 'required',
+            'TanggalPenerbitan' => 'required',
+            'InstansiPenerbit' => 'required',
+
+            'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
+            
+            ]);
+
+            $tgl_siujk = $request->input('TanggalPenerbitan');
+            $tgl_berlaku = $request->input('MasaBerlaku');
+    
+            $api = Api::find($request->id_api);
+            $vendor_id = $api->vendor_id;
+            $api->no_dokumen = $request->input('NomorDokumen');
+            $api->tgl_penerbitan = Carbon::parse($tgl_siujk)->format('Y-m-d H:i:s');
+            $api->instansi_penerbit = $request->input('InstansiPenerbit');
+            $api->masa_berlaku_status = $request->input('MasaBerlakuStatus');
+            $api->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FileApi')){ 
+            $file = $request->file('FileApi');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'api';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/api/'.$api->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $api->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+            }
+
+            $api->save();
+            //dd($request->all());
+            return redirect('/vendors/'.$vendor_id)->with('success','Data API Updated');
+
     }
 
     /**

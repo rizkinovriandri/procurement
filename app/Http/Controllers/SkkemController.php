@@ -114,6 +114,49 @@ class SkkemController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $this->validate($request, [
+            'NomorSK' => 'required',
+            'TanggalSK' => 'required',
+            'ModalDasar' => 'required',
+            'ModalDisetor' => 'required',
+        ]);
+
+        $tgl_sk = $request->input('TanggalSK');
+
+        $skkem = Skkem::find($request->id_skkem);
+        $vendor_id = $skkem->vendor_id;
+        $skkem->nomor_sk = $request->input('NomorSK');
+        $skkem->tgl_sk = Carbon::parse($tgl_sk)->format('Y-m-d H:i:s');
+        $skkem->cur_modal_dasar = $request->input('CurModalDasar');
+        $skkem->modal_dasar = $request->input('ModalDasar');
+        $skkem->cur_modal_disetor = $request->input('CurModalDisetor');
+        $skkem->modal_disetor = $request->input('ModalDisetor');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('FileSK')){ 
+            $file = $request->file('FileSK');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'skkem';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/skkem/'.$skkem->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $skkem->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
+    
+        $skkem->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data SK Kemenkumham Updated');
+
     }
 
     /**

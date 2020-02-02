@@ -115,6 +115,51 @@ class SiujkController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NomorDokumen' => 'required',
+            'TanggalPenerbitan' => 'required',
+            'InstansiPenerbit' => 'required',
+
+            'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
+            
+            ]);
+
+        $tgl_siujk = $request->input('TanggalPenerbitan');
+        $tgl_berlaku = $request->input('MasaBerlaku');
+
+        $siujk = Siujk::find($request->id_siujk);
+        $vendor_id = $siujk->vendor_id;
+        $siujk->no_dokumen = $request->input('NomorDokumen');
+        $siujk->tgl_penerbitan = Carbon::parse($tgl_siujk)->format('Y-m-d H:i:s');
+        $siujk->instansi_penerbit = $request->input('InstansiPenerbit');
+        $siujk->masa_berlaku_status = $request->input('MasaBerlakuStatus');
+        $siujk->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('FileSiujk')){ 
+            $file = $request->file('FileSiujk');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siujk';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/siujk/'.$siujk->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $siujk->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
+
+        $siujk->save();
+        //dd($request->all());
+        return redirect('/vendors/'.$vendor_id)->with('success','Data SIUJK Updated');
+
     }
 
     /**

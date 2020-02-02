@@ -561,9 +561,15 @@
 
 
      function ShowHideDivSiup() {
-        var chkYes = document.getElementById("chkYesSiup");
+        var chkYes = document.getElementById("MasaBerlakuStatus2");
         var isi_tanggal_berlaku = document.getElementById("isi_tanggal_berlaku_siup");
-        isi_tanggal_berlaku_siup.style.display = chkYes.checked ? "block" : "none";
+        isi_tanggal_berlaku.style.display = chkYes.checked ? "block" : "none";
+    }
+
+    function ShowHideDivSiupEdit() {
+        var chkYes = document.getElementById("EditMasaBerlakuStatus2");
+        var isi_tanggal_berlaku = document.getElementById("edit_isi_tanggal_berlaku_siup");
+        isi_tanggal_berlaku.style.display = chkYes.checked ? "block" : "none";
     }
 
     function ShowHideDivTdp() {
@@ -572,16 +578,34 @@
         isi_tanggal_berlaku_tdp.style.display = chkYes.checked ? "block" : "none";
     }
 
+    function ShowHideDivTdpEdit() {
+        var chkYes = document.getElementById("EditMasaBerlakuTdp2");
+        var isi_tanggal_berlaku = document.getElementById("edit_isi_tanggal_berlaku_tdp");
+        isi_tanggal_berlaku.style.display = chkYes.checked ? "block" : "none";
+    }
+
     function ShowHideDivSiujk() {
         var chkYes = document.getElementById("chkYesSiujk");
         var isi_tanggal_berlaku = document.getElementById("isi_tanggal_berlaku_siujk");
         isi_tanggal_berlaku_siujk.style.display = chkYes.checked ? "block" : "none";
     }
 
+    function ShowHideDivSiujkEdit() {
+        var chkYes = document.getElementById("EditMasaBerlakuSiujk2");
+        var isi_tanggal_berlaku = document.getElementById("edit_isi_tanggal_berlaku_siujk");
+        isi_tanggal_berlaku.style.display = chkYes.checked ? "block" : "none";
+    }
+
     function ShowHideDivApi() {
         var chkYes = document.getElementById("chkYesApi");
         var isi_tanggal_berlaku = document.getElementById("isi_tanggal_berlaku_api");
         isi_tanggal_berlaku_api.style.display = chkYes.checked ? "block" : "none";
+    }
+
+    function ShowHideDivApiEdit() {
+        var chkYes = document.getElementById("EditMasaBerlakuApi2");
+        var isi_tanggal_berlaku = document.getElementById("edit_isi_tanggal_berlaku_api");
+        isi_tanggal_berlaku.style.display = chkYes.checked ? "block" : "none";
     }
 
     function ShowHideDiv() {

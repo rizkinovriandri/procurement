@@ -488,11 +488,27 @@
         autoclose: true
       })
 
+      $('#edit_tgl_siup1').datepicker({
+        autoclose: true
+      })
+
+      $('#edit_tgl_siup2').datepicker({
+        autoclose: true
+      })
+
       $('#tgl_tdp1').datepicker({
         autoclose: true
       })
 
       $('#tgl_tdp2').datepicker({
+        autoclose: true
+      })
+
+      $('#edit_tgl_tdp1').datepicker({
+        autoclose: true
+      })
+
+      $('#edit_tgl_tdp2').datepicker({
         autoclose: true
       })
 
@@ -504,6 +520,14 @@
         autoclose: true
       })
 
+      $('#edit_tgl_siujk1').datepicker({
+        autoclose: true
+      })
+
+      $('#edit_tgl_siujk2').datepicker({
+        autoclose: true
+      })
+
       $('#tgl_api1').datepicker({
         autoclose: true
       })
@@ -512,8 +536,21 @@
         autoclose: true
       })
 
+      $('#edit_tgl_api1').datepicker({
+        autoclose: true
+      })
+
+      $('#edit_tgl_api2').datepicker({
+        autoclose: true
+      })
+
       //Date picker
       $('#tgl_skkem').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
+      $('#tgl_skkem_edit').datepicker({
         autoclose: true
       })
 
@@ -529,8 +566,15 @@
 
       //Date picker
       $('#tgl_akta').datepicker({
-        autoclose: true
+        autoclose: true,
+        todayHighlight: true
       })
+
+      //Date picker
+      $('#tgl_akta_edit').datepicker({
+        autoclose: true,
+        todayHighlight: true
+      })      
 
        //Date picker
        $('#tgl_awal_sertifikat').datepicker({
@@ -577,6 +621,16 @@
         autoclose: true
       })
 
+ 
+      function ShowHideDivSiup() {
+          // var chkYes = document.getElementById("MasaBerlakuStatus2");
+          // console.log('Event trigered');
+          // var isi_tanggal_berlaku = document.getElementById("isi_tanggal_berlaku_siup");
+          // isi_tanggal_berlaku_siup.style.display = chkYes.checked ? "block" : "none";
+          console.log('Event trigered');
+      }
+                            
+
       function deleteVendor2(id)
      {
          var id = id;
@@ -619,14 +673,162 @@
 
   </script>
 
-  
+  <script>
 
-    <script>
+      
+
+      //==============================================================
+          //[start] script modal edit Siup
+          //$('#modal-edit-siup').on('show.bs.modal', function (event) {
+
+          
+
+          $('#modal-edit-siup').on('show.bs.modal', function (event) {
+
+          //console.log('Modal opened');
+
+          if ( event.relatedTarget != null) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+          } 
+          var no_dokumen = button.data('no_dokumen') // Extract info from data-* attributes
+          var jenis_izin = button.data('jenis_izin')
+          var id_siup = button.data('id_siup')
+          var tgl_penerbitan = button.data('tgl_penerbitan')
+          var instansi_penerbit = button.data('instansi_penerbit')
+          var masa_berlaku_status = button.data('masa_berlaku_status') 
+          var berlaku_sampai = button.data('berlaku_sampai')
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)  
+          //modal.find('.modal-title').text('New message to ' + recipient)
+
+          if (jenis_izin=="SIUP"){
+            $("#JenisIzin1").prop("checked", true)
+          }
+          else if (jenis_izin=="NIB"){
+            $("#JenisIzin2").prop("checked", true)
+          }
+
+          modal.find('.modal-body #NomorDokumen').val(no_dokumen)
+          modal.find('.modal-body #id_siup').val(id_siup)
+          modal.find('.modal-body #edit_tgl_siup1').val(tgl_penerbitan)
+          modal.find('.modal-body #InstansiPenerbit').val(instansi_penerbit)
+          //modal.find('.modal-body #InstansiPenerbit').val(masa_berlaku_status)
+
+          
+          if (masa_berlaku_status=="0"){
+            $("#EditMasaBerlakuStatus1").prop("checked", true)
+            console.log('Modal 0');
+          }
+          else{
+            $("#EditMasaBerlakuStatus2").prop("checked", true)
+            console.log('Modal 1');
+            ShowHideDivSiupEdit();
+          }
+          
+          modal.find('.modal-body #edit_tgl_siup2').val(berlaku_sampai)
+          
+          })
+
+          //})
+          //[end] script modal edit Siup
+
+      //==============================================================
+
+  </script>
+
+  
+  <script>
+
+          
+
+          //==============================================================
+          //[start] script modal edit Skkem
+          $('#modal-edit-skkem').on('show.bs.modal', function (event) {
+
+          //console.log('Modal opened');
+          
+          if ( event.relatedTarget != null) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+          }
+          
+          var nomor_sk = button.data('nomor_sk') // Extract info from data-* attributes
+          var id_skkem = button.data('id_skkem')
+          var tgl_sk = button.data('tgl_sk')
+          var cur_modal_dasar = button.data('cur_modal_dasar')
+          var modal_dasar = button.data('modal_dasar')
+          var cur_modal_disetor = button.data('cur_modal_disetor')
+          var modal_disetor = button.data('modal_disetor')
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          //modal.find('.modal-title').text('New message to ' + recipient)
+          modal.find('.modal-body #NomorSK').val(nomor_sk)
+          modal.find('.modal-body #id_skkem').val(id_skkem)
+          modal.find('.modal-body #tgl_skkem_edit').val(tgl_sk)
+          modal.find('.modal-body #ModalDasar').val(modal_dasar)
+          modal.find('.modal-body #ModalDisetor').val(modal_disetor)
+          
+          //penentuan select menu cur modal dasar
+          if (cur_modal_dasar=="IDR"){
+          $("#CurModIDR").prop("selected", true)
+          }
+          else if (cur_modal_dasar=="USD"){
+            $("#CurModUSD").prop("selected", true)
+          }
+          else if (cur_modal_dasar=="JPY"){
+            $("#CurModJPY").prop("selected", true)
+          }
+          else if (cur_modal_dasar=="SGD"){
+            $("#CurModSGD").prop("selected", true)
+          }
+          else if (cur_modal_dasar=="EUR"){
+            $("#CurModEUR").prop("selected", true)
+          }
+          else if (cur_modal_dasar=="CHF"){
+            $("#CurModCHF").prop("selected", true)
+          }
+
+          //penentuan select menu cur modal disetor
+          if (cur_modal_disetor=="IDR"){
+          $("#CurDisIDR").prop("selected", true)
+          }
+          else if (cur_modal_disetor=="USD"){
+            $("#CurDisUSD").prop("selected", true)
+          }
+          else if (cur_modal_disetor=="JPY"){
+            $("#CurDisJPY").prop("selected", true)
+          }
+          else if (cur_modal_disetor=="SGD"){
+            $("#CurDisSGD").prop("selected", true)
+          }
+          else if (cur_modal_disetor=="EUR"){
+            $("#CurDisEUR").prop("selected", true)
+          }
+          else if (cur_modal_disetor=="CHF"){
+            $("#CurDisCHF").prop("selected", true)
+          }
+
+
+          })
+
+
+
+          //[end] script modal edit SKkem
+
+        //==============================================================
+
+        //==============================================================
           //[start] script modal edit pengurus
         $('#modal-edit').on('show.bs.modal', function (event) {
 
         //console.log('Modal opened');
-        var button = $(event.relatedTarget) // Button that triggered the modal
+        
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
         var name = button.data('name') // Extract info from data-* attributes
         var pengurus_id = button.data('pengurus_id')
         var jabatan = button.data('jabatan')
@@ -636,7 +838,7 @@
 
         // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
         // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-        var modal = $(this)
+        var modal = $(this)  
         //modal.find('.modal-title').text('New message to ' + recipient)
         modal.find('.modal-body #Nama').val(name)
         modal.find('.modal-body #Jabatan').val(jabatan)
@@ -647,7 +849,209 @@
         })
         //[end] scrip modal edit pengurus
 
+        //==============================================================
+        
+         //[start] script modal edit Akta
+         $('#modal-edit-akta').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+        var jenis = button.data('jenis') // Extract info from data-* attributes
+        var id_akta = button.data('id_akta')
+        var nama_notaris = button.data('nama_notaris')
+        var nomor = button.data('nomor')
+        var tgl_akta = button.data('tgl_akta')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+        if (jenis=="Pendirian"){
+          $("#JenisAkta1").prop("checked", true)
+        }
+        else{
+          $("#JenisAkta2").prop("checked", true)
+        }
+        modal.find('.modal-body #NamaNotaris').val(nama_notaris)
+        modal.find('.modal-body #NomorAkta').val(nomor)
+        modal.find('.modal-body #tgl_akta_edit').val(tgl_akta)
+        modal.find('.modal-body #id_akta').val(id_akta)
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+       
+
+        })
+        //[end] scrip modal edit akta
+
+        //==============================================================
+
+        //==============================================================
+        
+         //[start] script modal edit tdp
+         $('#modal-edit-tdp').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+             
+        var no_dokumen = button.data('no_dokumen') // Extract info from data-* attributes
+        var id_tdp = button.data('id_tdp')
+        var tgl_penerbitan = button.data('tgl_penerbitan')
+        var instansi_penerbit = button.data('instansi_penerbit')
+        var masa_berlaku_status = button.data('masa_berlaku_status')
+        var berlaku_sampai = button.data('berlaku_sampai')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+       
+        modal.find('.modal-body #NomorDokumen').val(no_dokumen)
+        modal.find('.modal-body #id_tdp').val(id_tdp)
+        modal.find('.modal-body #edit_tgl_tdp1').val(tgl_penerbitan)
+        modal.find('.modal-body #InstansiPenerbit').val(instansi_penerbit)
+
+        if (masa_berlaku_status=="0"){
+              $("#EditMasaBerlakuTdp1").prop("checked", true)
+              console.log('Modal 0');
+            }
+            else{
+              $("#EditMasaBerlakuTdp2").prop("checked", true)
+              console.log('Modal 1');
+              ShowHideDivTdpEdit();
+            }
+
+        modal.find('.modal-body #edit_tgl_tdp2').val(berlaku_sampai)
+        
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+
+
+        })
+        //[end] scrip modal edit tdp
+
+        //==============================================================
+
+        //==============================================================
+        
+         //[start] script modal edit siujk
+         $('#modal-edit-siujk').on('show.bs.modal', function (event) {
+
+          //console.log('Modal opened');
+          if ( event.relatedTarget != null) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+          }
+              
+          var no_dokumen = button.data('no_dokumen') // Extract info from data-* attributes
+          var id_siujk = button.data('id_siujk')
+          var tgl_penerbitan = button.data('tgl_penerbitan')
+          var instansi_penerbit = button.data('instansi_penerbit')
+          var masa_berlaku_status = button.data('masa_berlaku_status')
+          var berlaku_sampai = button.data('berlaku_sampai')
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          //modal.find('.modal-title').text('New message to ' + recipient)
+
+          modal.find('.modal-body #NomorDokumen').val(no_dokumen)
+          modal.find('.modal-body #id_siujk').val(id_siujk)
+          modal.find('.modal-body #edit_tgl_siujk1').val(tgl_penerbitan)
+          modal.find('.modal-body #InstansiPenerbit').val(instansi_penerbit)
+
+          if (masa_berlaku_status=="0"){
+                $("#EditMasaBerlakuSiujk1").prop("checked", true)
+                console.log('Modal 0');
+              }
+              else{
+                $("#EditMasaBerlakuSiujk2").prop("checked", true)
+                console.log('Modal 1');
+                ShowHideDivSiujkEdit()
+              }
+
+          modal.find('.modal-body #edit_tgl_siujk2').val(berlaku_sampai)
+
+          // $('input[name="tgl_akta_edit"]').datepicker({                
+          //   format: "yyyy/mm/dd",           
+          //   autoclose: true,
+          //   todayHighlight: true
+          // });
+
+
+
+          })
+          //[end] scrip modal edit siujk
+
+          //==============================================================
+
+
+          //==============================================================
+        
+         //[start] script modal edit api
+         $('#modal-edit-api').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var no_dokumen = button.data('no_dokumen') // Extract info from data-* attributes
+        var id_api = button.data('id_api')
+        var tgl_penerbitan = button.data('tgl_penerbitan')
+        var instansi_penerbit = button.data('instansi_penerbit')
+        var masa_berlaku_status = button.data('masa_berlaku_status')
+        var berlaku_sampai = button.data('berlaku_sampai')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #NomorDokumen').val(no_dokumen)
+        modal.find('.modal-body #id_api').val(id_api)
+        modal.find('.modal-body #edit_tgl_api1').val(tgl_penerbitan)
+        modal.find('.modal-body #InstansiPenerbit').val(instansi_penerbit)
+
+        if (masa_berlaku_status=="0"){
+              $("#EditMasaBerlakuApi1").prop("checked", true)
+              console.log('Modal 0');
+            }
+            else{
+              $("#EditMasaBerlakuApi2").prop("checked", true)
+              console.log('Modal 1');
+              ShowHideDivApiEdit()
+            }
+
+        modal.find('.modal-body #edit_tgl_api2').val(berlaku_sampai)
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit api
+
+        //==============================================================
+
+       
+        
     </script>
+
+
 
 </body>
 </html>
