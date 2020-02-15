@@ -112,6 +112,47 @@ class LapkeuController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            
+            'NilaiAsset' => 'required',
+            'NilaiPenjualan' => 'required',
+            'TahunLaporan' => 'required|numeric',
+            ]);
+
+            $lapkeu = Lapkeu::find($request->id_lapkeu);
+            $vendor_id = $lapkeu->vendor_id;
+            $lapkeu->cur_nilai_asset = $request->input('CurNilaiAsset');
+            $lapkeu->nilai_asset = $request->input('NilaiAsset');
+            $lapkeu->cur_nilai_penjualan = $request->input('CurNilaiPenjualan');
+            $lapkeu->nilai_penjualan = $request->input('NilaiPenjualan');
+            $lapkeu->tahun = $request->input('TahunLaporan');
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FileLapkeu')){ 
+                $file = $request->file('FileLapkeu');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'lapkeu';
+    
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/lapkeu/'.$lapkeu->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file){
+                    unlink($file_path);
+                }
+    
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $lapkeu->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+                }
+    
+                $lapkeu->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Laporan Keuangan Updated');
+
+            
     }
 
     /**

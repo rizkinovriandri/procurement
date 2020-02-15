@@ -98,6 +98,25 @@ class SubBarangController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            
+            'SubBarang' => 'required',
+            'NamaBarang' => 'required',
+            'Merk' => 'required',
+            'sumber' => 'required',
+            
+            ]);
+
+            $subbarang = SubBarang::find($request->id_bidang);
+            $vendor_id = $subbarang->vendor_id;
+            $subbarang->sub_bidang = $request->input('SubBarang');
+            $subbarang->nama_barang = $request->input('NamaBarang');
+            $subbarang->merk = $request->input('Merk');
+            $subbarang->sumber = $request->input('sumber');
+
+            $subbarang->save();
+            //dd($request->all());
+             return redirect('/vendors/'.$vendor_id)->with('success','Data Bidang Updated');
     }
 
     /**

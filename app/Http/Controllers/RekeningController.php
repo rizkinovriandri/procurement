@@ -112,6 +112,46 @@ class RekeningController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NoRek' => 'required',
+            'PemegangRekening' => 'required',
+            'NamaBank' => 'required',
+            'Cabang' => 'required',
+            
+            ]);
+
+            $rekening = Rekening::find($request->id_rekening);
+            $vendor_id = $rekening->vendor_id;
+            $rekening->no_rekening = $request->input('NoRek');
+            $rekening->pemegang_rekening = $request->input('PemegangRekening');
+            $rekening->nama_bank = $request->input('NamaBank');
+            $rekening->cabang = $request->input('Cabang');
+            $rekening->mata_uang = $request->input('MataUang');
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FileRefBank')){ 
+                $file = $request->file('FileRefBank');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'rekening';
+    
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/rekening/'.$rekening->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file){
+                    unlink($file_path);
+                }
+    
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $rekening->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+                }
+    
+                $rekening->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Rekening Updated');
     }
 
     /**

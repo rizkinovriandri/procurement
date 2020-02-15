@@ -115,6 +115,52 @@ class SertifikatController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NomorSertifikat' => 'required',
+            'NamaSertifikat' => 'required',
+            'InstansiPenerbit' => 'required',
+            'BerlakuMulai' => 'required',
+            
+            ]);
+
+            $tgl_awal = $request->input('BerlakuMulai');
+            $tgl_akhir = $request->input('BerlakuSampai');
+
+            $sertifikat = Sertifikat::find($request->id_sertifikat);
+            $vendor_id = $sertifikat->vendor_id;
+            $sertifikat->type = $request->input('JenisSertifikat');
+            $sertifikat->nomor = $request->input('NomorSertifikat');
+            $sertifikat->nama = $request->input('NamaSertifikat');
+            $sertifikat->instansi_penerbit = $request->input('InstansiPenerbit');
+            $sertifikat->tgl_terbit = Carbon::parse($tgl_awal)->format('Y-m-d H:i:s');
+            $sertifikat->tgl_kadaluarsa = Carbon::parse($tgl_akhir)->format('Y-m-d H:i:s');
+
+            
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FileSertifikat')){ 
+                $file = $request->file('FileSertifikat');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'sertifikat';
+    
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/sertifikat/'.$sertifikat->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file){
+                    unlink($file_path);
+                }
+    
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $sertifikat->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+                }
+    
+                $sertifikat->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Sertifikat Updated');
     }
 
     /**

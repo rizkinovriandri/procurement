@@ -587,6 +587,16 @@
       })
 
       //Date picker
+      $('#edit_tgl_awal_sertifikat').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
+      $('#edit_tgl_akhir_sertifikat').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
       $('#tgl_mulai_proyek').datepicker({
         autoclose: true
       })
@@ -597,12 +607,32 @@
       })
 
       //Date picker
+      $('#edit_tgl_mulai_proyek').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
+      $('#edit_tgl_selesai_proyek').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
       $('#tgl_awal_keagenan').datepicker({
         autoclose: true
       })
 
       //Date picker
       $('#tgl_akhir_keagenan').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
+      $('#edit_tgl_awal_keagenan').datepicker({
+        autoclose: true
+      })
+
+      //Date picker
+      $('#edit_tgl_akhir_keagenan').datepicker({
         autoclose: true
       })
 
@@ -1047,8 +1077,529 @@
 
         //==============================================================
 
-       
+         //==============================================================
         
+         //[start] script modal edit rekening
+         $('#modal-edit-rekening').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var no_rekening = button.data('no_rekening') // Extract info from data-* attributes
+        var id_rekening = button.data('id_rekening')
+        var pemegang_rekening = button.data('pemegang_rekening')
+        var nama_bank = button.data('nama_bank')
+        var cabang = button.data('cabang')
+        var mata_uang = button.data('mata_uang')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #NoRek').val(no_rekening)
+        modal.find('.modal-body #id_rekening').val(id_rekening)
+        modal.find('.modal-body #PemegangRekening').val(pemegang_rekening)
+        modal.find('.modal-body #NamaBank').val(nama_bank)
+        modal.find('.modal-body #Cabang').val(cabang)
+
+        //penentuan select menu cur rekening
+          if (mata_uang=="IDR"){
+            $("#MataUangRekIDR").prop("selected", true)
+          }
+          else if (mata_uang=="USD"){
+            $("#MataUangRekUSD").prop("selected", true)
+          }
+          else if (mata_uang=="JPY"){
+            $("#MataUangRekJPY").prop("selected", true)
+          }
+          else if (mata_uang=="SGD"){
+            $("#MataUangRekSGD").prop("selected", true)
+          }
+          else if (mata_uang=="EUR"){
+            $("#MataUangRekEUR").prop("selected", true)
+          }
+          else if (mata_uang=="CHF"){
+            $("#MataUangRekCHF").prop("selected", true)
+          }
+
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit rekening
+
+        //==============================================================
+
+        //==============================================================
+        
+         //[start] script modal edit Lapkeu
+         $('#modal-edit-lapkeu').on('show.bs.modal', function (event) {
+
+          //console.log('Modal opened');
+          if ( event.relatedTarget != null) {
+            var button = $(event.relatedTarget) // Button that triggered the modal
+          }
+              
+          var tahun = button.data('tahun') // Extract info from data-* attributes
+          var id_lapkeu = button.data('id_lapkeu')
+          var cur_nilai_asset = button.data('cur_nilai_asset')
+          var nilai_asset = button.data('nilai_asset')
+          var cur_nilai_penjualan = button.data('cur_nilai_penjualan')
+          var nilai_penjualan = button.data('nilai_penjualan')
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          //modal.find('.modal-title').text('New message to ' + recipient)
+
+          modal.find('.modal-body #NilaiAsset').val(nilai_asset)
+          modal.find('.modal-body #id_lapkeu').val(id_lapkeu)
+          modal.find('.modal-body #NilaiPenjualan').val(nilai_penjualan)
+          modal.find('.modal-body #TahunLaporan').val(tahun)
+
+          //penentuan select menu cur nilai asset
+            if (cur_nilai_asset=="IDR"){
+              $("#CurNilaiAssetIDR").prop("selected", true)
+            }
+            else if (cur_nilai_asset=="USD"){
+              $("#CurNilaiAssetUSD").prop("selected", true)
+            }
+            else if (cur_nilai_asset=="JPY"){
+              $("#CurNilaiAssetJPY").prop("selected", true)
+            }
+            else if (cur_nilai_asset=="SGD"){
+              $("#CurNilaiAssetSGD").prop("selected", true)
+            }
+            else if (cur_nilai_asset=="EUR"){
+              $("#CurNilaiAssetEUR").prop("selected", true)
+            }
+            else if (cur_nilai_asset=="CHF"){
+              $("#CurNilaiAssetCHF").prop("selected", true)
+            }
+
+            //penentuan select menu cur nilai penjualan
+            if (cur_nilai_penjualan=="IDR"){
+              $("#CurNilaiPenjualanIDR").prop("selected", true)
+            }
+            else if (cur_nilai_penjualan=="USD"){
+              $("#CurNilaiPenjualanUSD").prop("selected", true)
+            }
+            else if (cur_nilai_penjualan=="JPY"){
+              $("#CurNilaiPenjualanJPY").prop("selected", true)
+            }
+            else if (cur_nilai_penjualan=="SGD"){
+              $("#CurNilaiPenjualanSGD").prop("selected", true)
+            }
+            else if (cur_nilai_penjualan=="EUR"){
+              $("#CurNilaiPenjualanEUR").prop("selected", true)
+            }
+            else if (cur_nilai_penjualan=="CHF"){
+              $("#CurNilaiPenjualanCHF").prop("selected", true)
+            }
+
+
+          // $('input[name="tgl_akta_edit"]').datepicker({                
+          //   format: "yyyy/mm/dd",           
+          //   autoclose: true,
+          //   todayHighlight: true
+          // });
+
+          })
+          //[end] scrip modal edit Lapkeu
+
+          //==============================================================
+
+          //==============================================================
+        
+         //[start] script modal edit Perpajakan
+         $('#modal-edit-perpajakan').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var jenis_dokumen = button.data('jenis_dokumen') // Extract info from data-* attributes
+        var id_perpajakan = button.data('id_perpajakan')
+        var nomor_dokumen = button.data('nomor_dokumen')
+        var tahun = button.data('tahun')
+        
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        //modal.find('.modal-body #NilaiAsset').val(jenis_dokumen)
+        modal.find('.modal-body #id_perpajakan').val(id_perpajakan)
+        modal.find('.modal-body #NomorDokumen').val(nomor_dokumen)
+        modal.find('.modal-body #TahunPenerbitan').val(tahun)
+
+        //penentuan select menu cur nilai asset
+          if (jenis_dokumen=="NPWP"){
+            $("#JenisDokumen1").prop("selected", true)
+          }
+          else if (jenis_dokumen=="SPT"){
+            $("#JenisDokumen2").prop("selected", true)
+          }
+          else if (jenis_dokumen=="SKT"){
+            $("#JenisDokumen3").prop("selected", true)
+          }
+          else if (jenis_dokumen=="SPPKP"){
+            $("#JenisDokumen4").prop("selected", true)
+          }
+         
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit Perpajakan
+
+        //==============================================================
+
+        //==============================================================
+        
+         //[start] script modal edit keagenan
+         $('#modal-edit-keagenan').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var nama_principle = button.data('nama_principle') // Extract info from data-* attributes
+        var id_keagenan = button.data('id_keagenan')
+        var jenis_barang = button.data('jenis_barang')
+        var tgl_berlaku_mulai = button.data('tgl_berlaku_mulai')
+        var tgl_berlaku_sampai = button.data('tgl_berlaku_sampai')
+        
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #NamaPrinciple').val(nama_principle)
+        modal.find('.modal-body #id_keagenan').val(id_keagenan)
+        modal.find('.modal-body #JenisBarang').val(jenis_barang)
+        modal.find('.modal-body #edit_tgl_awal_keagenan').val(tgl_berlaku_mulai)
+        modal.find('.modal-body #edit_tgl_akhir_keagenan').val(tgl_berlaku_sampai)
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit keagenan
+
+        //==============================================================
+
+         //==============================================================
+        
+         //[start] script modal edit tenaga ahli
+         $('#modal-edit-tenagaahli').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var nama = button.data('nama') // Extract info from data-* attributes
+        var id_tenagaahli = button.data('id_tenagaahli')
+        var pendidikan = button.data('pendidikan')
+        var keahlian = button.data('keahlian')
+        var pengalaman = button.data('pengalaman')
+        var status = button.data('status')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        //modal.find('.modal-body #NilaiAsset').val(jenis_dokumen)
+        modal.find('.modal-body #NamaPersonil').val(nama)
+        modal.find('.modal-body #id_tenagaahli').val(id_tenagaahli)
+        modal.find('.modal-body #PendidikanTerakhir').val(pendidikan)
+        modal.find('.modal-body #Keahlian').val(keahlian)
+        modal.find('.modal-body #Pengalaman').val(pengalaman)
+
+        //penentuan select status
+
+          if (status=="Permanen"){
+              $("#Status1").prop("selected", true)
+              console.log(status);
+            }
+            else{
+              $("#Status2").prop("selected", true)
+              console.log(status);
+            }
+        
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit tenaga ahli
+
+        //==============================================================
+
+         //==============================================================
+        
+         //[start] script modal edit sertifikat
+          $('#modal-edit-sertifikat').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var type = button.data('type') // Extract info from data-* attributes
+        var id_sertifikat = button.data('id_sertifikat')
+        var nomor = button.data('nomor')
+        var nama = button.data('nama')
+        var instansi_penerbit = button.data('instansi_penerbit')
+        var tgl_terbit = button.data('tgl_terbit')
+        var tgl_kadaluarsa = button.data('tgl_kadaluarsa')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #id_sertifikat').val(id_sertifikat)
+        modal.find('.modal-body #NomorSertifikat').val(nomor)
+        modal.find('.modal-body #NamaSertifikat').val(nama)
+        modal.find('.modal-body #InstansiPenerbit').val(instansi_penerbit)
+        modal.find('.modal-body #edit_tgl_awal_sertifikat').val(tgl_terbit)
+        modal.find('.modal-body #edit_tgl_akhir_sertifikat').val(tgl_kadaluarsa)
+
+          //penentuan select tipe sertifikat
+          if (type=="Mutu"){
+            $("#JenisSertifikat1").prop("selected", true)
+          }
+          else if (type=="Lingkungan Hidup"){
+            $("#JenisSertifikat2").prop("selected", true)
+          }
+          else if (type=="Patent dan Lisensi"){
+            $("#JenisSertifikat3").prop("selected", true)
+          }
+          else if (type=="Asosiasi Profesi"){
+            $("#JenisSertifikat4").prop("selected", true)
+          }
+          else if (type=="Lainnya"){
+            $("#JenisSertifikat5").prop("selected", true)
+          }
+
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit Sertifikat
+
+        //==============================================================
+
+        //==============================================================
+        
+         //[start] script modal edit sertifikat
+         $('#modal-edit-fasilitas').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var nama_peralatan = button.data('nama_peralatan') // Extract info from data-* attributes
+        var id_fasilitas = button.data('id_fasilitas')
+        var spesifikasi = button.data('spesifikasi')
+        var jumlah = button.data('jumlah')
+        var tahun_pembuatan = button.data('tahun_pembuatan')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #id_fasilitas').val(id_fasilitas)
+        modal.find('.modal-body #NamaPeralatan').val(nama_peralatan)
+        modal.find('.modal-body #Spesifikasi').val(spesifikasi)
+        modal.find('.modal-body #Jumlah').val(jumlah)
+        modal.find('.modal-body #TahunPembuatan').val(tahun_pembuatan)
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit Sertifikat
+
+        //==============================================================
+       
+        //==============================================================
+        
+         //[start] script modal edit Pengalaman
+         $('#modal-edit-pengalaman').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+            
+        var nama_pelanggan = button.data('nama_pelanggan') // Extract info from data-* attributes
+        var id_pengalaman = button.data('id_pengalaman')
+        var nama_pekerjaan = button.data('nama_pekerjaan')
+        var keterangan = button.data('keterangan')
+        var cur_nilai_proyek = button.data('cur_nilai_proyek')
+        var nilai_proyek = button.data('nilai_proyek')
+        var nomor_kontrak = button.data('nomor_kontrak')
+        var tgl_mulai_proyek = button.data('tgl_mulai_proyek')
+        var tgl_selesai_proyek = button.data('tgl_selesai_proyek')
+        var contact_person = button.data('contact_person')
+        var no_contact_person = button.data('no_contact_person')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #NamaPelanggan').val(nama_pelanggan)
+        modal.find('.modal-body #id_pengalaman').val(id_pengalaman)
+        modal.find('.modal-body #NamaPekerjaan').val(nama_pekerjaan)
+        modal.find('.modal-body #KeteranganSingkat').val(keterangan)
+        modal.find('.modal-body #NilaiProyek').val(nilai_proyek)
+        modal.find('.modal-body #NomorKontrak').val(nomor_kontrak)
+        modal.find('.modal-body #edit_tgl_mulai_proyek').val(tgl_mulai_proyek)
+        modal.find('.modal-body #edit_tgl_selesai_proyek').val(tgl_selesai_proyek)
+        modal.find('.modal-body #ContactPerson').val(contact_person)
+        modal.find('.modal-body #NoContact').val(no_contact_person)
+
+        //penentuan select menu cur nilai proyek
+          if (cur_nilai_proyek=="IDR"){
+            $("#CurNilaiProyek1").prop("selected", true)
+          }
+          else if (cur_nilai_proyek=="USD"){
+            $("#CurNilaiProyek2").prop("selected", true)
+          }
+          else if (cur_nilai_proyek=="JPY"){
+            $("#CurNilaiProyek3").prop("selected", true)
+          }
+          else if (cur_nilai_proyek=="SGD"){
+            $("#CurNilaiProyek4").prop("selected", true)
+          }
+          else if (cur_nilai_proyek=="EUR"){
+            $("#CurNilaiProyek5").prop("selected", true)
+          }
+          else if (cur_nilai_proyek=="CHF"){
+            $("#CurNilaiProyek6").prop("selected", true)
+          }
+
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit pengalaman
+
+        //==============================================================
+
+
+        //==============================================================
+        
+         //[start] script modal edit bidang
+         $('#modal-edit-bidang').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+        
+        var tipe_bidang = button.data('tipe_bidang')
+
+        if (tipe_bidang == "Barang"){  
+          var sub_bidang = button.data('sub_bidang') // Extract info from data-* attributes
+          var id_bidang = button.data('id_bidang')
+          var nama_barang = button.data('nama_barang')
+          var merk = button.data('merk')
+          var sumber = button.data('sumber')
+        
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          //modal.find('.modal-title').text('New message to ' + recipient)
+
+          //modal.find('.modal-body #NilaiAsset').val(jenis_dokumen)
+          //modal.find('.modal-body #SubBarang').val(sub_bidang)
+          modal.find('.modal-body #NamaBarang').val(nama_barang)
+          modal.find('.modal-body #id_bidang').val(id_bidang)
+          modal.find('.modal-body #Merk').val(merk)
+
+          // Set selected Sub barang 
+          $('#SubBarang').val(sub_bidang);
+          $('#SubBarang').select2().trigger('change');
+
+          //penentuan select status
+
+            if (sumber=="Lokal"){
+                $("#sumber1").prop("checked", true)
+                console.log(sumber);
+              }
+              else{
+                $("#sumber2").prop("checked", true)
+                console.log(sumber);
+              }
+        } else {
+
+          var sub_bidang = button.data('sub_bidang') // Extract info from data-* attributes
+          var id_bidang = button.data('id_bidang')
+
+          // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+          // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+          var modal = $(this)
+          //modal.find('.modal-title').text('New message to ' + recipient)
+
+          modal.find('.modal-body #id_bidang').val(id_bidang)
+
+          // Set selected Sub barang 
+          $('#SubJasa').val(sub_bidang);
+          $('#SubJasa').select2().trigger('change');
+
+
+        }
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit bidang
+
+        //==============================================================
+
     </script>
 
 

@@ -91,6 +91,20 @@ class SubJasaController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            
+            'SubJasa' => 'required',
+            
+            ]);
+
+            $subjasa = SubJasa::find($request->id_bidang);
+            $vendor_id = $subjasa->vendor_id;
+            $subjasa->sub_bidang = $request->input('SubJasa');
+           
+
+            $subjasa->save();
+            //return "store";
+            return redirect('/vendors/'.$vendor_id)->with('success','Data Sub Bidang berhasil diupdate');
     }
 
     /**

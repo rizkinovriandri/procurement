@@ -102,6 +102,28 @@ class TenagaAhliController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            
+            'NamaPersonil' => 'required',
+            'PendidikanTerakhir' => 'required',
+            'Keahlian' => 'required',
+            'Pengalaman' => 'required|numeric',
+            
+            ]);
+
+            $tenagaahli = TenagaAhli::find($request->id_tenagaahli);
+            $vendor_id = $tenagaahli->vendor_id;
+            $tenagaahli->nama = $request->input('NamaPersonil');
+            $tenagaahli->pendidikan = $request->input('PendidikanTerakhir');
+            $tenagaahli->keahlian = $request->input('Keahlian');
+            $tenagaahli->pengalaman = $request->input('Pengalaman');
+            $tenagaahli->status = $request->input('Status');
+
+            $tenagaahli->save();
+                //dd($request->all());
+            return redirect('/vendors/'.$vendor_id)->with('success','Data Tenaga Ahli Updated');
+
+
     }
 
     /**

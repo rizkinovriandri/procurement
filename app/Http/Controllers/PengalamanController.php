@@ -111,6 +111,38 @@ class PengalamanController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NamaPelanggan' => 'required',
+            'NamaPekerjaan' => 'required',
+            'KeteranganSingkat' => 'required',
+            'NilaiProyek' => 'required|numeric',
+            'NomorKontrak' => 'required',
+            'TanggalMulai' => 'required',
+            'TanggalSelesai' => 'required',
+            
+            ]);
+
+            $tgl_mulai = $request->input('TanggalMulai');
+            $tgl_selesai = $request->input('TanggalSelesai');
+
+            $pengalaman = Pengalaman::find($request->id_pengalaman);
+            $vendor_id = $pengalaman->vendor_id;
+
+            $pengalaman->nama_pelanggan = $request->input('NamaPelanggan');
+            $pengalaman->nama_pekerjaan = $request->input('NamaPekerjaan');
+            $pengalaman->keterangan = $request->input('KeteranganSingkat');
+            $pengalaman->cur_nilai_proyek = $request->input('CurNilaiProyek');
+            $pengalaman->nilai_proyek = $request->input('NilaiProyek');
+            $pengalaman->nomor_kontrak = $request->input('NomorKontrak');
+            $pengalaman->tgl_mulai_proyek = Carbon::parse($tgl_mulai)->format('Y-m-d H:i:s');
+            $pengalaman->tgl_selesai_proyek = Carbon::parse($tgl_selesai)->format('Y-m-d H:i:s');
+            $pengalaman->contact_person = $request->input('ContactPerson');
+            $pengalaman->no_contact_person = $request->input('NoContact');
+
+            $pengalaman->save();
+                //dd($request->all());
+            return redirect('/vendors/'.$vendor_id)->with('success','Data Pengalaman Updated');
+
     }
 
     /**

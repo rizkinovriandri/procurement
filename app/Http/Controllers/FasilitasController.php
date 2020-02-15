@@ -102,6 +102,24 @@ class FasilitasController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NamaPeralatan' => 'required',
+            'Spesifikasi' => 'required',
+            'Jumlah' => 'required|numeric',
+            'TahunPembuatan' => 'required|numeric',
+           
+            ]);
+
+            $fasilitas = Fasilitas::find($request->id_fasilitas);
+            $vendor_id = $fasilitas->vendor_id;
+            $fasilitas->nama_peralatan = $request->input('NamaPeralatan');
+            $fasilitas->spesifikasi = $request->input('Spesifikasi');
+            $fasilitas->jumlah = $request->input('Jumlah');
+            $fasilitas->tahun_pembuatan = $request->input('TahunPembuatan');
+
+            $fasilitas->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Fasilitas Updated');
     }
 
     /**

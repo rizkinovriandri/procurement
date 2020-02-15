@@ -110,6 +110,44 @@ class PerpajakanController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            
+            'NomorDokumen' => 'required',
+            'TahunPenerbitan' => 'required|numeric',
+            
+            ]);
+
+            $perpajakan = Perpajakan::find($request->id_perpajakan);
+            $vendor_id = $perpajakan->vendor_id;
+            $perpajakan->jenis_dokumen = $request->input('JenisDokumen');
+            $perpajakan->nomor_dokumen = $request->input('NomorDokumen');
+            $perpajakan->tahun = $request->input('TahunPenerbitan');
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FilePerpajakan')){ 
+                $file = $request->file('FilePerpajakan');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'perpajakan';
+    
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/perpajakan/'.$perpajakan->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file){
+                    unlink($file_path);
+                }
+    
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $perpajakan->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+                }
+    
+                $perpajakan->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Perpajakan Updated');
+
     }
 
     /**

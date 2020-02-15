@@ -2,6 +2,13 @@
 
 @section('content')
 
+<style>
+  .tblPengalaman {
+    overflow-x: scroll;
+  }
+  
+</style>
+
 
 <!-- Content Wrapper. Contains page content -->
   

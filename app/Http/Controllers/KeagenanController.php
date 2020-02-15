@@ -120,6 +120,57 @@ class KeagenanController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'NamaPrinciple' => 'required',
+            'JenisBarang' => 'required',
+            'KeagenanBerlakuMulai' => 'required',
+            //'KeagenanBerlakuSampai' => 'required',
+            
+            //'FileKeagenan' => 'required|mimes:pdf,jpg,jpeg,png|max:10000',
+            ]);
+
+            $tgl_awal = $request->input('KeagenanBerlakuMulai');
+            $tgl_akhir = $request->input('KeagenanBerlakuSampai');
+
+            $keagenan = Keagenan::find($request->id_keagenan);
+            $vendor_id = $keagenan->vendor_id;
+            $keagenan->nama_principle = $request->input('NamaPrinciple');
+            $keagenan->vendor_id = $vendor_id;
+            $keagenan->jenis_barang = $request->input('JenisBarang');
+            $keagenan->tgl_berlaku_mulai = Carbon::parse($tgl_awal)->format('Y-m-d H:i:s');
+
+            if ($tgl_akhir<>""){
+                $keagenan->tgl_berlaku_sampai = Carbon::parse($tgl_akhir)->format('Y-m-d H:i:s');
+            }
+            else {
+                $keagenan->tgl_berlaku_sampai = null;
+            }
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('FileKeagenan')){ 
+                $file = $request->file('FileKeagenan');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'keagenan';
+    
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/keagenan/'.$keagenan->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file){
+                    unlink($file_path);
+                }
+    
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $keagenan->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+                }
+    
+                $keagenan->save();
+                //dd($request->all());
+                return redirect('/vendors/'.$vendor_id)->with('success','Data Keagenan Updated');
+
     }
 
     /**
