@@ -9,6 +9,7 @@ use App\Vendor;
 use App\Pengurus;
 use Auth;
 use Carbon\Carbon;
+use File;
 
 class PengurusController extends Controller
 {
@@ -44,9 +45,26 @@ class PengurusController extends Controller
          $validatedData = $request->validate([
             'Nama' => 'required',
             'Jabatan' => 'required',
+            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:2000',
             ]);
     
             // menyimpan data file yang diupload ke variabel $file
+
+            // menyimpan data file yang diupload ke variabel $file
+            if($request->hasFile('PhotoPengurus')){ 
+                $file = $request->file('PhotoPengurus');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'pengurus';
+
+                // upload file
+
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $pengurus->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            }
             
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
@@ -60,7 +78,7 @@ class PengurusController extends Controller
             $pengurus->email = $request->input('email');
     
             // $fileName = $akta->getNextId();
-            // upload file
+            
     
             $pengurus->save();
             //return "store";
@@ -102,6 +120,7 @@ class PengurusController extends Controller
         $this->validate($request, [
             'Nama' => 'required',
             'Jabatan' => 'required',
+            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:2000',
         ]);
 
 
@@ -112,6 +131,27 @@ class PengurusController extends Controller
         $pengurus->no_telepon = $request->input('NomorTelepon');
         $pengurus->no_hp = $request->input('NomorHp');
         $pengurus->email = $request->input('email');
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('PhotoPengurus')){ 
+            $file = $request->file('PhotoPengurus');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'pengurus';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/pengurus/'.$pengurus->filename;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $pengurus->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
         
         $pengurus->save();
         //dd($request->all());
@@ -129,6 +169,13 @@ class PengurusController extends Controller
         //
         $pengurus = Pengurus::find($id);
         $vendor_id = $pengurus->vendor_id;
+
+        $file_path = public_path().'/documents/pengurus/'.$pengurus->filename;
+        $check_file = File::exists($file_path);
+        if ($check_file){
+            unlink($file_path);
+        }
+
         $pengurus->delete();
 
         return redirect('/vendors/'.$vendor_id)->with('success','Data Pengurus Deleted');

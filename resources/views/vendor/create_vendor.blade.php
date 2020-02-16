@@ -52,11 +52,12 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="{{url('vendorstore')}}" method="POST" class="form-horizontal">
+            <form action="{{url('vendorstore')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+              
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
-                  <label for="NamaPerusahaan" class="col-sm-2 control-label">Nama Perusahaan</label>
+                  <label for="NamaPerusahaan" class="col-sm-2 control-label">Nama Perusahaan2</label>
 
                   <div class="col-sm-6">
                     <input type="text" class="form-control" name="NamaPerusahaan" id="NamaPerusahaan" placeholder="Nama Perusahaan" value="{{old('NamaPerusahaan')}}">
@@ -281,6 +282,14 @@
 
                   <div class="col-sm-2">
                     <textarea rows="4" cols="50" name="keterangan" id="keterangan"></textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="upload_foto" class="col-sm-2 control-label">Foto Kantor</label>
+
+                  <div class="col-sm-2">
+                    <input type="file" name="PhotoKantor" id="PhotoKantor">
                   </div>
                 </div>
 

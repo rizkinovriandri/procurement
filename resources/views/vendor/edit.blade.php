@@ -52,7 +52,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form action="{{action('VendorsController@update',$vendor->id)}}" method="post" class="form-horizontal">
+            <form action="{{action('VendorsController@update',$vendor->id)}}" method="post" class="form-horizontal" enctype="multipart/form-data">
 
               {{ csrf_field() }}
               <input type="hidden" name="_method" value="PATCH" />
@@ -282,8 +282,15 @@
                   <label for="fax" class="col-sm-2 control-label">Keterangan</label>
 
                   <div class="col-sm-2">
-                    <textarea rows="4" cols="50" name="keterangan" id="keterangan">{{$vendor->keterangan}}
-                    </textarea>
+                    <textarea rows="4" cols="50" name="keterangan" id="keterangan">{{$vendor->keterangan}}</textarea>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="upload_foto" class="col-sm-2 control-label">Foto Kantor</label>
+
+                  <div class="col-sm-2">
+                    <input type="file" name="PhotoKantor" id="PhotoKantor">
                   </div>
                 </div>
 

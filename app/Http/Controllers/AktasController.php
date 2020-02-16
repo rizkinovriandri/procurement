@@ -78,7 +78,6 @@ class AktasController extends Controller
         $akta->save();
         //return "store";
         return redirect('/vendors/'.$vendor_id)->with('success','Akta berhasil disimpan');
-
     }
 
     /**

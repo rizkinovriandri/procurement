@@ -35,6 +35,7 @@ class StoreVendorRequest extends FormRequest
             'KodePos' => 'required | numeric',
             'Telepon1' => 'required',
             
+            
             // 'cover' => 'image|max:2048'
 
 

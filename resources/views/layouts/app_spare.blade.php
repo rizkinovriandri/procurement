@@ -1600,6 +1600,50 @@
 
         //==============================================================
 
+        //==============================================================
+        
+         //[start] script modal foto pengurus
+         $('#modal-photo').on('show.bs.modal', function (event) {
+
+        //console.log('Modal opened');
+        if ( event.relatedTarget != null) {
+          var button = $(event.relatedTarget) // Button that triggered the modal
+        }
+        
+        // Extract info from data-* attributes
+        var pengurus_id = button.data('pengurus_id')
+        var name = button.data('name')
+        var jabatan = button.data('jabatan')
+        var filename = button.data('filename')
+        var no_photo = button.data('no_photo')
+        var img_src = button.data('img_src')
+
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+
+        modal.find('.modal-body #NamaPengurus').text(name)
+        modal.find('.modal-body #Jabatan').text(jabatan)
+        if (filename==""){
+          modal.find('.modal-body #imgPhotoPengurus').attr('src',no_photo)
+        } else {
+          modal.find('.modal-body #imgPhotoPengurus').attr('src',img_src)
+        }
+
+        modal.find('.modal-body #pengurus_id').val(pengurus_id)
+
+        // $('input[name="tgl_akta_edit"]').datepicker({                
+        //   format: "yyyy/mm/dd",           
+        //   autoclose: true,
+        //   todayHighlight: true
+        // });
+
+        })
+        //[end] scrip modal edit Sertifikat
+
+        //==============================================================
+
     </script>
 
 

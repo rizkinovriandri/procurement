@@ -119,11 +119,12 @@
                           <dd>{{date('d-M-Y',strtotime($vendor->created_at))}}</dd>  
                       </dl> -->
 
-                    <div class="vendorinfo" style="width:70%">
+                    <div class="vendorinfo" style="width:95%">
                       <table class="table table-bordered">
                         <tr>
-                          <th style="width: 350px"> </th>
-                           <th> </th> 
+                          <th style="width: 30%"> </th>
+                           <th style="width: 40%"> </th> 
+                           <th style="width: 30%"> </th> 
                         </tr>
                         <tr>
                           <td><b>Nama Perusahaan</b></td>
@@ -131,6 +132,21 @@
                             <div>
                             {{$vendor->nama}}
                             </div>
+                          </td>
+                          <td rowspan="10">
+                            <center>
+                              <?php 
+                                if ($vendor->filekantor == "") {
+                                  $path = url('documents/kantor/no_image.png');
+                                } else {
+                                  $path = url('documents/kantor/'.$vendor->filekantor);
+                                }
+                                ?>
+                              <label for="gambarkantor">Foto Kantor</label>
+                              <img id="fotoKantor" width="100%" src="{{$path}}">
+                            </center>
+
+
                           </td>
                           <!-- <td><span class="badge bg-red">55%</span></td> -->
                         </tr>
@@ -353,7 +369,7 @@
                       </table>
                      
                       @role('admin')
-                      <a  href="{{route('vendors.edit',$vendor->id)}}" class="btn btn-primary pull-left" style="margin-left: 270px">Edit</a>
+                      <a  href="{{route('vendors.edit',$vendor->id)}}" class="btn btn-primary pull-left" >&nbsp;&nbsp;<b>Edit</b>&nbsp;&nbsp;</a>
                       @endrole
                     </div>
 

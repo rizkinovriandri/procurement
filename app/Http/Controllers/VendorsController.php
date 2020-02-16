@@ -86,9 +86,36 @@ class VendorsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreVendorRequest $request)
+    public function store(Request $request)
     {
         //storing data vendor
+
+      
+
+        $validatedData = $request->validate([
+            'NamaPerusahaan' => 'required |unique:vendors,nama',
+            'email' => 'required',
+            'alamat' => 'required',
+            'kota' => 'required',
+            'negara' => 'required',
+            'KodePos' => 'required | numeric',
+            'Telepon1' => 'required',
+            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:2000',
+            ]);
+
+        // menyimpan data file yang diupload ke variabel $file
+        if($request->hasFile('PhotoKantor')){
+            $file = $request->file('PhotoKantor');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'kantor';
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $vendor->filekantor = $fileName;
+                
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
        
         $tempkeluarga = $request->input('keluarga');
 
@@ -119,7 +146,7 @@ class VendorsController extends Controller
             $vendor->nama_keluarga = '';
         }
         //$vendor->nama_keluarga = $request->input('nama_pegawai');
-        
+
 
         $vendor->created_by = Auth::user()->name;
         $vendor->save();
@@ -180,7 +207,8 @@ class VendorsController extends Controller
             'kota' => 'required',
             'negara' => 'required',
             'KodePos' => 'required | numeric',
-            'Telepon1' => 'required'
+            'Telepon1' => 'required',
+            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:2000',
 
         ]);
         
@@ -222,6 +250,27 @@ class VendorsController extends Controller
             $vendor->nama_keluarga = $request->input('nama_pegawai');
         } else {
             $vendor->nama_keluarga = '';
+        }
+
+         // menyimpan data file yang diupload ke variabel $file
+         if($request->hasFile('PhotoKantor')){ 
+            $file = $request->file('PhotoKantor');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'kantor';
+
+            //Delete file yang sebelumnya
+            $file_path = public_path().'/documents/kantor/'.$vendor->filekantor;
+            $check_file = File::exists($file_path);
+            if ($check_file){
+                unlink($file_path);
+            }
+
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $vendor->filekantor = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
         }
 
         $vendor->created_by = Auth::user()->name;
@@ -413,6 +462,14 @@ class VendorsController extends Controller
          //------- Delete file status ----------
         
          $vendor->statuses()->delete();
+
+         //------- Delete file photo jika ada ----------
+
+        $file_path = public_path().'/documents/kantor/'.$vendor->filekantor;
+        $check_file = File::exists($file_path);
+        if ($check_file){
+            unlink($file_path);
+        }
 
          //------- Delete vendor instance ----------
          $vendor->delete();

@@ -30,10 +30,10 @@
                             <th style="width: 4%">No</th>
                             <th style="width: 23%">Nama</th>
                             <th style="width: 15%">Jabatan</th>
-                            <th style="width: 15%">No Telepon</th>
-                            <th style="width: 14%">No Handphone</th>
+                            <th style="width: 10%">No Telepon</th>
+                            <th style="width: 10%">No Handphone</th>
                             <th style="width: 22%">Email</th>
-                            @role('admin') <th style="width: 7%">Action</th> @endrole
+                            @role('admin') <th style="width: 14%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -49,8 +49,18 @@
                             <td class="id">{{$a->no_telepon}}</td>
                             <td>{{$a->no_hp}}</td>
                             <td>{{$a->email}}</td>
+   
                             @role('admin')
                             <td>
+                              <button data-toggle="modal" data-target="#modal-photo" 
+                              data-pengurus_id="{{$a->id}}"
+                              data-name="{{$a->nama}}"
+                              data-jabatan="{{$a->jabatan}}"
+                              data-filename="{{$a->filename}}"
+                              data-no_photo="{{url('documents/pengurus/no_photo.png')}}"
+                              data-img_src="{{url('documents/pengurus/'.$a->filename)}}"
+                              
+                              class="btn btn-success"><i class="fa fa-user-circle-o"></i> Lihat Foto</button>
                               <button data-toggle="modal" data-target="#modal-edit" 
                               data-pengurus_id="{{$a->id}}"
                               data-name="{{$a->nama}}"
@@ -129,11 +139,13 @@
                           <div class="col-sm-5">
                             <input type="text" class="form-control" name="email" id="email" placeholder="Email" value="{{old('email')}}">
                           </div>
-                        </div>                                        
-              
+                        </div> 
+                        
                         <div class="form-group">
+                          <label for="PhotoPengurus" class="col-sm-3 control-label">Upload Foto</label>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-4">
+                            <input type="file" name="PhotoPengurus">
                             <input type="hidden" class="form-control" name="vendor_id" value="{{$vendor->id}}" id="vendor_id" >
                             <input type="hidden" class="form-control" name="vendor_name" value="{{$vendor->nama}}" id="vendor_name" >
                           </div>
@@ -220,8 +232,10 @@
                         </div>                                        
               
                         <div class="form-group">
+                          <label for="PhotoPengurus" class="col-sm-3 control-label">Upload Foto</label>
 
-                          <div class="col-sm-2">
+                          <div class="col-sm-4">
+                            <input type="file" name="PhotoPengurus">
                             <input type="hidden" class="form-control" name="vendor_id" value="{{$vendor->id}}" id="vendor_id" >
                             <input type="hidden" class="form-control" name="vendor_name" value="{{$vendor->nama}}" id="vendor_name" >
                           </div>
@@ -247,6 +261,48 @@
               </div>
                 <!-- /.modal-dialog -->
           <!-- /Modal edit pengurus -->
+
+          <!-- Modal photo pengurus -->
+          
+          <div class="modal fade" id="modal-photo">
+            <div class="modal-dialog">
+              <div class="modal-content" style="width: 300px; left: 35%; top: 50px">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title">Photo Pengurus</h4>
+                </div>
+                <div class="modal-body">
+                    <form action="{{action('PengurusController@update','test')}}" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                  {{ method_field('patch')}}
+                  {{ csrf_field() }}
+                  
+                  <div class="box-body">
+                    <center>
+                      <img id="imgPhotoPengurus" style="width: 90%">
+                      <br><br>
+                      <label for="NamaPengurus" id="NamaPengurus"></label>
+                      <br>
+                      <label for="Jabatan" id="Jabatan"></label>
+                  </center>
+                    
+                    
+                  </div>
+                  
+                
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                  
+                </div>
+                </form>
+              
+              </div>
+            </div>
+              <!-- /.modal-content -->
+          </div>
+            <!-- /.modal-dialog -->
+      <!-- /Modal photo pengurus -->
 
 
 
