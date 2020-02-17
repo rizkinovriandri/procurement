@@ -130,6 +130,10 @@ Route::group(['prefix'=>'', 'middleware'=>['auth']], function () {
 	Route::resource('subjasas', 'SubJasaController');
 });
 
+Route::group(['prefix'=>'', 'middleware'=>['auth']], function () {
+	Route::resource('pengadaans', 'PengadaanController');
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

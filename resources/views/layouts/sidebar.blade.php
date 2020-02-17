@@ -64,6 +64,23 @@
 
         <li class="treeview">
           <a href="#">
+            <i class="fa fa-shopping-cart "></i>
+            <span>Proses Pengadaan</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+              <!-- <span class="label label-primary pull-right">4</span> -->
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{url('pengadaans')}}"><i class="fa fa-bars"></i>Daftar Item RFx</a></li>
+            <li><a href="#"><i class="fa fa-lock"></i> ... </a></li>
+            <li><a href="#"><i class="fa fa-handshake-o"></i> ... </a></li>
+            <li><a href="#"><i class="fa fa-pencil-square"></i> ... </a></li>
+          </ul>
+        </li>
+
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-cog"></i>
             <span>Setting</span>
             <span class="pull-right-container">
