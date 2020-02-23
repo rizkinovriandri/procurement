@@ -429,6 +429,21 @@
       'info'        : true,
       'autoWidth'   : false
     })
+    $('#tbl_pengadaan').DataTable({
+      'paging'      : true,
+      'lengthChange': true,
+      'searching'   : true,
+      'ordering'    : true,
+      'info'        : false,
+      'scrollX'     : true,
+      "pagingType"  : "full_numbers",
+      'stateSave'   : true,
+      "lengthMenu"  : [ 10, 25, 50, 75, 100 ],
+      
+      
+     
+      
+    })
   })
 
   var url = window.location;

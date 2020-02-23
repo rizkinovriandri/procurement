@@ -132,6 +132,7 @@ Route::group(['prefix'=>'', 'middleware'=>['auth']], function () {
 
 Route::group(['prefix'=>'', 'middleware'=>['auth']], function () {
 	Route::resource('pengadaans', 'PengadaanController');
+	Route::post('pengadaan/import', 'PengadaanController@import');
 });
 
 Auth::routes();
