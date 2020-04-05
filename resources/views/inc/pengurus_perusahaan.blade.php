@@ -28,12 +28,12 @@
                           <thead>
                           <tr>
                             <th style="width: 4%">No</th>
-                            <th style="width: 23%">Nama</th>
+                            <th style="width: 18%">Nama</th>
                             <th style="width: 15%">Jabatan</th>
                             <th style="width: 10%">No Telepon</th>
                             <th style="width: 10%">No Handphone</th>
                             <th style="width: 22%">Email</th>
-                            @role('admin') <th style="width: 14%">Action</th> @endrole
+                            @role('admin') <th style="width: 19%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>

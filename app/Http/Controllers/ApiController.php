@@ -49,21 +49,32 @@ class ApiController extends Controller
 
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
             
-            'FileApi' => 'required|mimes:pdf|max:2000',
+            'FileApi' => 'mimes:pdf|max:6000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileApi');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'api';
+            $api = new Api;
+
+            if($request->hasFile('FileApi')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileApi');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'api';
     
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $api->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             $tgl_api = $request->input('TanggalPenerbitan');
             $tgl_berlaku = $request->input('MasaBerlaku');
     
-            $api = new Api;
+            
             $api->no_dokumen = $request->input('NomorDokumen');
             $api->vendor_id = $vendor_id;
             $api->tgl_penerbitan = Carbon::parse($tgl_api)->format('Y-m-d H:i:s');
@@ -71,12 +82,7 @@ class ApiController extends Controller
             $api->masa_berlaku_status = $request->input('MasaBerlakuStatus');
             $api->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
     
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $api->filename = $fileName;
             
-            // upload file
-            $file->move($destination_folder,$fileName);
     
             $api->save();
             //return "store";
@@ -119,7 +125,7 @@ class ApiController extends Controller
             'NomorDokumen' => 'required',
             'TanggalPenerbitan' => 'required',
             'InstansiPenerbit' => 'required',
-
+            'FileApi' => 'mimes:pdf|max:6000',
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
             
             ]);
@@ -137,23 +143,23 @@ class ApiController extends Controller
 
             // menyimpan data file yang diupload ke variabel $file
             if($request->hasFile('FileApi')){ 
-            $file = $request->file('FileApi');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'api';
+                $file = $request->file('FileApi');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'api';
 
-            //Delete file yang sebelumnya
-            $file_path = public_path().'/documents/api/'.$api->filename;
-            $check_file = File::exists($file_path);
-            if ($check_file){
-                unlink($file_path);
-            }
+                //Delete file yang sebelumnya
+                $file_path = public_path().'/documents/api/'.$api->filename;
+                $check_file = File::exists($file_path);
+                if ($check_file && $api->filename<>""){
+                    unlink($file_path);
+                }
 
-            $fileName = md5(time()) . '.' . $extension;
-            // $fileName = $akta->getNextId();
-            $api->filename = $fileName;
-            
-            // upload file
-            $file->move($destination_folder,$fileName);
+                $fileName = md5(time()) . '.' . $extension;
+                // $fileName = $akta->getNextId();
+                $api->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
             }
 
             $api->save();
@@ -175,7 +181,7 @@ class ApiController extends Controller
         $vendor_id = $api->vendor_id;
         $file_path = public_path().'/documents/api/'.$api->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $api->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

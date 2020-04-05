@@ -48,32 +48,36 @@ class RekeningController extends Controller
             'PemegangRekening' => 'required',
             'NamaBank' => 'required',
             'Cabang' => 'required',
-            'FileRefBank' => 'required|mimes:pdf|max:2000',
+            'FileRefBank' => 'mimes:pdf|max:3000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileRefBank');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'rekening';
+            $rekening = new Rekening;
+
+            if($request->hasFile('FileRefBank')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileRefBank');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'rekening';
     
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $rekening->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             
-            $rekening = new Rekening;
             $rekening->no_rekening = $request->input('NoRek');
             $rekening->vendor_id = $vendor_id;
             $rekening->pemegang_rekening = $request->input('PemegangRekening');
             $rekening->nama_bank = $request->input('NamaBank');
             $rekening->cabang = $request->input('Cabang');
             $rekening->mata_uang = $request->input('MataUang');
-    
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $rekening->filename = $fileName;
             
-            // upload file
-            $file->move($destination_folder,$fileName);
     
             $rekening->save();
             //return "store";
@@ -117,7 +121,7 @@ class RekeningController extends Controller
             'PemegangRekening' => 'required',
             'NamaBank' => 'required',
             'Cabang' => 'required',
-            
+            'FileRefBank' => 'mimes:pdf|max:3000',
             ]);
 
             $rekening = Rekening::find($request->id_rekening);
@@ -137,7 +141,7 @@ class RekeningController extends Controller
                 //Delete file yang sebelumnya
                 $file_path = public_path().'/documents/rekening/'.$rekening->filename;
                 $check_file = File::exists($file_path);
-                if ($check_file){
+                if ($check_file && $rekening->filename<>""){
                     unlink($file_path);
                 }
     
@@ -167,7 +171,7 @@ class RekeningController extends Controller
         $vendor_id = $rekening->vendor_id;
         $file_path = public_path().'/documents/rekening/'.$rekening->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $rekening->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

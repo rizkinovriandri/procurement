@@ -50,21 +50,33 @@ class SiupController extends Controller
 
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
             
-            'FileSiup' => 'required|mimes:pdf|max:2000',
+            'FileSiup' => 'mimes:pdf|max:6000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileSiup');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siupnib';
-    
+            $siup = new Siup;
+
+            if($request->hasFile('FileSiup')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileSiup');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siupnib';
+
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $siup->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             $tgl_siup = $request->input('TanggalPenerbitan');
             $tgl_berlaku = $request->input('MasaBerlaku');
     
-            $siup = new Siup;
+            
             $siup->jenis_izin = $request->input('JenisIzin');
             $siup->no_dokumen = $request->input('NomorDokumen');
             $siup->vendor_id = $vendor_id;
@@ -73,12 +85,7 @@ class SiupController extends Controller
             $siup->masa_berlaku_status = $request->input('MasaBerlakuStatus');
             $siup->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
     
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $siup->filename = $fileName;
-            
-            // upload file
-            $file->move($destination_folder,$fileName);
+           
     
             $siup->save();
             //return "store";
@@ -121,7 +128,7 @@ class SiupController extends Controller
             'NomorDokumen' => 'required',
             'TanggalPenerbitan' => 'required',
             'InstansiPenerbit' => 'required',
-
+            'FileSiup' => 'mimes:pdf|max:6000',
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1', 
         ]);
 
@@ -146,7 +153,7 @@ class SiupController extends Controller
             //Delete file yang sebelumnya
             $file_path = public_path().'/documents/siupnib/'.$siup->filename;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $siup->filename<>""){
                 unlink($file_path);
             }
 
@@ -172,16 +179,16 @@ class SiupController extends Controller
     public function destroy($id)
     {
          //
-         $siup = Siup::find($id);
-         $vendor_id = $siup->vendor_id;
-         $file_path = public_path().'/documents/siupnib/'.$siup->filename;
-         $check_file = File::exists($file_path);
-         if ($check_file){
-             unlink($file_path);
-         }
+        $siup = Siup::find($id);
+        $vendor_id = $siup->vendor_id;
+        $file_path = public_path().'/documents/siupnib/'.$siup->filename;
+        $check_file = File::exists($file_path);
+        if ($check_file && $siup->filename<>""){
+            unlink($file_path);
+        }
          //File::delete($file_path);
-         $siup->delete();
- 
-         return redirect('/vendors/'.$vendor_id)->with('success','SIUP/NIB Deleted');
+        $siup->delete();
+
+        return redirect('/vendors/'.$vendor_id)->with('success','SIUP/NIB Deleted');
     }
 }

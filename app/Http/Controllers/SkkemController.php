@@ -48,20 +48,30 @@ class SkkemController extends Controller
         'TanggalSK' => 'required',
         'ModalDasar' => 'required',
         'ModalDisetor' => 'required',
-        'FileSK' => 'required|mimes:pdf|max:2000',
+        'FileSK' => 'mimes:pdf|max:6000',
         
         ]);
 
         // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('FileSK');
-        $extension = $file->getClientOriginalExtension();
-        $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'skkem';
 
+        $skkem = new Skkem;
+
+        if($request->hasFile('FileAkta')){
+            $file = $request->file('FileSK');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'skkem';
+            $fileName = md5(time()) . '.' . $extension;;
+            // $fileName = $akta->getNextId();
+            $skkem->filename = $fileName;
+            
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
         $vendor_id = $request->input('vendor_id');
         $vendor_name = $request->input('vendor_name');
         $tgl_sk = $request->input('TanggalSK');
 
-        $skkem = new Skkem;
+        
         $skkem->nomor_sk = $request->input('NomorSK');
         $skkem->vendor_id = $vendor_id;
         $skkem->tgl_sk = Carbon::parse($tgl_sk)->format('Y-m-d H:i:s');
@@ -69,13 +79,6 @@ class SkkemController extends Controller
         $skkem->modal_dasar = $request->input('ModalDasar');
         $skkem->cur_modal_disetor = $request->input('CurModalDisetor');
         $skkem->modal_disetor = $request->input('ModalDisetor');
-
-        $fileName = md5(time()) . '.' . $extension;;
-        // $fileName = $akta->getNextId();
-        $skkem->filename = $fileName;
-        
-        // upload file
-        $file->move($destination_folder,$fileName);
 
         $skkem->save();
         //return "store";
@@ -119,6 +122,7 @@ class SkkemController extends Controller
             'TanggalSK' => 'required',
             'ModalDasar' => 'required',
             'ModalDisetor' => 'required',
+            'FileSK' => 'mimes:pdf|max:6000',
         ]);
 
         $tgl_sk = $request->input('TanggalSK');
@@ -141,7 +145,7 @@ class SkkemController extends Controller
             //Delete file yang sebelumnya
             $file_path = public_path().'/documents/skkem/'.$skkem->filename;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $skkem->filename<>""){
                 unlink($file_path);
             }
 
@@ -173,7 +177,7 @@ class SkkemController extends Controller
         $file_path = public_path().'/documents/skkem/'.$skkem->filename;
         $check_file = File::exists($file_path);
         
-        if ($check_file){
+        if ($check_file && $skkem->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

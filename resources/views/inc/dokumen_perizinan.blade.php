@@ -277,11 +277,11 @@
                           <tr>
                             <th style="width: 4%">No</th>
                             <th style="width: 15%">Nomor Dokumen</th>
-                            <th style="width: 13%">Tanggal Penerbitan</th>
+                            <th style="width: 12%">Tanggal Penerbitan</th>
                             <th style="width: 20%">Instansi Penerbit</th>
-                            <th style="width: 20%">Masa Berlaku</th>
-                            <th style="width: 10%">File</th>
-                            @role('admin')<th style="width: 6%">Action</th>@endrole
+                            <th style="width: 12%">Masa Berlaku</th>
+                            <th style="width: 12%">File</th>
+                            @role('admin')<th style="width: 11%">Action</th>@endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -306,7 +306,12 @@
 
                             </td>
                             <td>
-                              <a href="{{url('documents/api/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a></td>
+                              @if ($a->filename <>"")
+                                <a href="{{url('documents/api/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
+                            </td>
                             @role('admin')
                             <td>
                             <button data-toggle="modal" data-target="#modal-edit-api" 
@@ -594,11 +599,11 @@
                           <tr>
                             <th style="width: 4%">No</th>
                             <th style="width: 15%">Nomor Dokumen</th>
-                            <th style="width: 13%">Tanggal Penerbitan</th>
+                            <th style="width: 11%">Tanggal Penerbitan</th>
                             <th style="width: 20%">Instansi Penerbit</th>
-                            <th style="width: 20%">Masa Berlaku</th>
-                            <th style="width: 9%">File</th>
-                            @role('admin') <th style="width: 6%">Action</th> @endrole
+                            <th style="width: 11%">Masa Berlaku</th>
+                            <th style="width: 11%">File</th>
+                            @role('admin') <th style="width: 10%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -623,7 +628,12 @@
 
                             </td>
                             <td>
-                              <a href="{{url('documents/siujk/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              
+                              @if ($a->filename <>"")
+                                <a href="{{url('documents/siujk/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
                             </td>
                             @role('admin')
                             <td>
@@ -906,11 +916,11 @@
                     <tr>
                       <th style="width: 4%">No</th>
                       <th style="width: 16%">Nomor Dokumen</th>
-                      <th style="width: 14%">Tanggal Penerbitan</th>
+                      <th style="width: 12%">Tanggal Penerbitan</th>
                       <th style="width: 20%">Instansi Penerbit</th>
-                      <th style="width: 20%">Masa Berlaku</th>
-                      <th style="width: 10%">File</th>
-                      @role('admin') <th style="width: 7%">Action</th> @endrole
+                      <th style="width: 12%">Masa Berlaku</th>
+                      <th style="width: 12%">File</th>
+                      @role('admin') <th style="width: 11%">Action</th> @endrole
                     </tr>
                     </thead>
                     <tbody>
@@ -936,7 +946,11 @@
                       </td>
                       
                       <td>
-                        <a href="{{url('documents/tdp/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                        @if ($a->filename <>"")
+                          <a href="{{url('documents/tdp/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                        @else 
+                          <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                        @endif
                       </td>
                       @role('admin')
                       <td>
@@ -991,12 +1005,12 @@
                 <tr>
                   <th style="width: 4%">No</th>
                   <th style="width: 20%">Nomor SK</th>
-                  <th style="width: 13%">Tanggal SK</th>
-                  <th style="width: 19%">Modal Dasar</th>
-                  <th style="width: 19%">Modal Disetor</th>
-                  <th style="width: 10%">File</th>
+                  <th style="width: 10%">Tanggal SK</th>
+                  <th style="width: 15%">Modal Dasar</th>
+                  <th style="width: 15%">Modal Disetor</th>
+                  <th style="width: 14%">File</th>
                   
-                  @role('admin') <th style="width: 7%">Action</th> @endrole
+                  @role('admin') <th style="width: 13%">Action</th> @endrole
                 </tr>
                 </thead>
                 <tbody>
@@ -1012,8 +1026,12 @@
                   <td align="right">{{$a->cur_modal_dasar}} &nbsp&nbsp {{number_format($a->modal_dasar,2)}}</td>
                   <td align="right">{{$a->cur_modal_disetor}} &nbsp&nbsp {{number_format($a->modal_disetor,2)}}</td>
                   <td><!-- iframe src="{{url('documents/akta/'.$a->filename)}}" width="100%" height="600"></iframe> -->
-                    <a href="{{url('documents/skkem/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a></td>
-                    
+                    @if ($a->filename <>"")
+                      <a href="{{url('documents/skkem/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                    @else 
+                      <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                    @endif
+                  </td>
                   @role('admin')
                   <td>
                   <button data-toggle="modal" data-target="#modal-edit-skkem" 
@@ -1567,13 +1585,13 @@
                     <thead>
                     <tr>
                       <th style="width: 4%">No</th>
-                      <th style="width: 8%">Jenis Izin</th>
-                      <th style="width: 10%">Nomor Dokumen</th>
-                      <th style="width: 15%">Tanggal Penerbitan</th>
-                      <th style="width: 20%">Instansi Penerbit</th>
+                      <th style="width: 5%">Jenis Izin</th>
+                      <th style="width: 12%">Nomor Dokumen</th>
+                      <th style="width: 12%">Tanggal Penerbitan</th>
+                      <th style="width: 18%">Instansi Penerbit</th>
                       <th style="width: 10%">Masa Berlaku</th>
                       <th style="width: 12%">File</th>
-                      @role('admin') <th style="width: 6%">Action</th> @endrole
+                      @role('admin') <th style="width: 11%">Action</th> @endrole
                     </tr>
                     </thead>
                     <tbody>
@@ -1599,8 +1617,14 @@
 
                       </td>
                       <td>
-                        <a href="{{url('documents/siupnib/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a></td>
-                      @role('admin')
+                        @if ($a->filename <>"")
+                          <a href="{{url('documents/siupnib/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                        @else 
+                          <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                        @endif
+                        </td>
+                      
+                        @role('admin')
                       <td>
                       <button data-toggle="modal" data-target="#modal-edit-siup" 
                               data-jenis_izin="{{$a->jenis_izin}}"
@@ -1861,9 +1885,9 @@
                   <th style="width: 30%">Nama Notaris</th>
                   <th style="width: 10%">Nomor Akta</th>
                   <th style="width: 10%">Tanggal Akta</th>
-                  <th style="width: 10%">File</th>
+                  <th style="width: 15%">File</th>
                 @role('admin') 
-                  <th style="width: 6%">Action</th> 
+                  <th style="width: 11%">Action</th> 
                  @endrole
                 </tr>
                 </thead>
@@ -1880,7 +1904,11 @@
                   <td>{{$a->nomor}}</td>
                   <td>{{ \Carbon\Carbon::parse($a->tgl_akta)->format('j F Y') }}</td>
                   <td><!-- iframe src="{{url('documents/akta/'.$a->filename)}}" width="100%" height="600"></iframe> -->
-                    <a href="{{url('documents/akta/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                  @if ($a->filename <>"")
+                    <a href="{{url('documents/akta/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                  @else 
+                  <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                  @endif
                   </td>
                   @role('admin')
                   <td>

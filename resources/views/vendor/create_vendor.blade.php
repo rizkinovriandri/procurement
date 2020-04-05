@@ -57,7 +57,7 @@
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
-                  <label for="NamaPerusahaan" class="col-sm-2 control-label">Nama Perusahaan2</label>
+                  <label for="NamaPerusahaan" class="col-sm-2 control-label">Nama Perusahaan</label>
 
                   <div class="col-sm-6">
                     <input type="text" class="form-control" name="NamaPerusahaan" id="NamaPerusahaan" placeholder="Nama Perusahaan" value="{{old('NamaPerusahaan')}}">

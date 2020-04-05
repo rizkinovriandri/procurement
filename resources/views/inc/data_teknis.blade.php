@@ -651,10 +651,10 @@
                             <th style="width: 4%">No</th>
                             <th style="width: 20%">Nama Principle</th>
                             <th style="width: 20%">Jenis Barang</th>
-                            <th style="width: 20%">Berlaku Mulai</th>
-                            <th style="width: 20%">Berlaku Sampai</th>
-                            <th>File</th>
-                            @role('admin') <th>Action</th> @endrole
+                            <th style="width: 12%">Berlaku Mulai</th>
+                            <th style="width: 12%">Berlaku Sampai</th>
+                            <th style="width: 12%">File</th>
+                            @role('admin') <th style="width: 11%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -676,7 +676,11 @@
                             @endif
 
                             <td><!-- iframe src="{{url('documents/akta/'.$a->filename)}}" width="100%" height="600"></iframe> -->
-                              <a href="{{url('documents/keagenan/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              @if ($a->filename <>"")
+                                <a href="{{url('documents/keagenan/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
                             </td>
                             @role('admin')
                             <td>
@@ -1593,10 +1597,10 @@
                             <th style="width: 10%">No Sertifikat</th>
                             <th style="width: 20%">Nama Sertifikat</th>
                             <th style="width: 10%">Instansi Penerbit</th>
-                            <th style="width: 10%">Tanggal Terbit</th>
-                            <th style="width: 10%">Tanggal Kadaluarsa</th>
+                            <th style="width: 9%">Tanggal Terbit</th>
+                            <th style="width: 9%">Tanggal Kadaluarsa</th>
                             <th style="width: 10%">File</th>
-                            @role('admin') <th style="width: 7%">Action</th> @endrole
+                            @role('admin') <th style="width: 10%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -1615,7 +1619,12 @@
                             <td>{{ \Carbon\Carbon::parse($a->tgl_kadaluarsa)->format('j F Y') }}</td>
 
                             <td><!-- iframe src="{{url('documents/akta/'.$a->filename)}}" width="100%" height="600"></iframe> -->
-                              <a href="{{url('documents/sertifikat/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              @if ($a->filename <>"")
+                              <a href="{{url('documents/sertifikat/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
+
                             </td>
                             @role('admin')
                             <td>

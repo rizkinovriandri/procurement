@@ -198,11 +198,11 @@
                           <thead>
                           <tr>
                             <th style="width: 4%">No</th>
-                            <th style="width: 20%">Jenis Dokumen</th>
-                            <th style="width: 18%">Nomor Dokumen</th>
+                            <th style="width: 22%">Jenis Dokumen</th>
+                            <th style="width: 15%">Nomor Dokumen</th>
                             <th style="width: 5%">Tahun Penerbitan</th>
                             <th style="width: 11%">File</th>
-                            @role('admin') <th style="width: 5%">Action</th> @endrole
+                            @role('admin') <th style="width: 9%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -227,7 +227,11 @@
                             <td align="center">{{$a->nomor_dokumen}}</td>
                             <td>{{$a->tahun}}</td>
                             <td>
-                            <a href="{{url('documents/perpajakan/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              @if ($a->filename <>"")
+                              <a href="{{url('documents/perpajakan/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
                             </td>
                             @role('admin')
                             <td>
@@ -482,11 +486,11 @@
                           <thead>
                           <tr>
                             <th style="width: 4%">No</th>
-                            <th style="width: 16%">Tahun Laporan</th>
-                            <th style="width: 20%">Nilai Asset</th>
-                            <th style="width: 20%">Nilai Penjualan</th>
-                            <th style="width: 10%">File</th>
-                            @role('admin') <th style="width: 6%">Action</th> @endrole
+                            <th style="width: 8%">Tahun Laporan</th>
+                            <th style="width: 15%">Nilai Asset</th>
+                            <th style="width: 15%">Nilai Penjualan</th>
+                            <th style="width: 12%">File</th>
+                            @role('admin') <th style="width: 9%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -501,7 +505,11 @@
                             <td align="right">{{$a->cur_nilai_asset}}&nbsp {{number_format($a->nilai_asset,2)}}</td>
                             <td align="right">{{$a->cur_nilai_penjualan}}&nbsp {{number_format($a->nilai_penjualan,2)}}</td>
                             <td>
-                            <a href="{{url('documents/lapkeu/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              @if ($a->filename <>"")
+                                <a href="{{url('documents/lapkeu/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
                             </td>
                             @role('admin')
                             <td>
@@ -754,13 +762,13 @@
                           <thead>
                           <tr>
                             <th style="width: 4%">No</th>
-                            <th style="width: 15%">Nomor Rekening</th>
-                            <th style="width: 15%">Atas Nama</th>
-                            <th style="width: 15%">Nama Bank</th>
-                            <th style="width: 15%">Cabang</th>
+                            <th style="width: 12%">Nomor Rekening</th>
+                            <th style="width: 14%">Atas Nama</th>
+                            <th style="width: 12%">Nama Bank</th>
+                            <th style="width: 12%">Cabang</th>
                             <th style="width: 8%">Mata Uang</th>
-                            <th style="width: 10%">File</th>
-                            @role('admin') <th style="width: 7%">Action</th> @endrole
+                            <th style="width: 11%">File</th>
+                            @role('admin') <th style="width: 11%">Action</th> @endrole
                           </tr>
                           </thead>
                           <tbody>
@@ -777,7 +785,12 @@
                             <td>{{$a->cabang}}</td>
                             <td>{{$a->mata_uang}}</td>
                             <td>
-                            <a href="{{url('documents/rekening/'.$a->filename)}}" target="_blank" type="application/pdf">lihat dokumen</a>
+                              @if ($a->filename <>"")
+                                <a href="{{url('documents/rekening/'.$a->filename)}}" target="_blank" type="application/pdf"><button type="button" class="btn btn-block btn-primary btn-sm">lihat dokumen</button></a>
+                              @else 
+                                <button type="button" class="btn btn-block btn-danger btn-sm">tidak ada file</button>
+                              @endif
+                          
                             </td>
                             @role('admin')
                             <td>

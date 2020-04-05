@@ -49,21 +49,32 @@ class SiujkController extends Controller
 
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
             
-            'FileSiujk' => 'required|mimes:pdf|max:2000',
+            'FileSiujk' => 'mimes:pdf|max:6000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileSiujk');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siujk';
+            $siujk = new Siujk;
+
+            if($request->hasFile('FileSiujk')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileSiujk');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'siujk';
     
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $siujk->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             $tgl_siujk = $request->input('TanggalPenerbitan');
             $tgl_berlaku = $request->input('MasaBerlaku');
     
-            $siujk = new Siujk;
+            
             $siujk->no_dokumen = $request->input('NomorDokumen');
             $siujk->vendor_id = $vendor_id;
             $siujk->tgl_penerbitan = Carbon::parse($tgl_siujk)->format('Y-m-d H:i:s');
@@ -71,12 +82,7 @@ class SiujkController extends Controller
             $siujk->masa_berlaku_status = $request->input('MasaBerlakuStatus');
             $siujk->berlaku_sampai = Carbon::parse($tgl_berlaku)->format('Y-m-d H:i:s');
     
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $siujk->filename = $fileName;
             
-            // upload file
-            $file->move($destination_folder,$fileName);
     
             $siujk->save();
             //return "store";
@@ -119,7 +125,7 @@ class SiujkController extends Controller
             'NomorDokumen' => 'required',
             'TanggalPenerbitan' => 'required',
             'InstansiPenerbit' => 'required',
-
+            'FileSiujk' => 'mimes:pdf|max:6000',
             'MasaBerlaku' => 'required_if:MasaBerlakuStatus,==,1',
             
             ]);
@@ -144,7 +150,7 @@ class SiujkController extends Controller
             //Delete file yang sebelumnya
             $file_path = public_path().'/documents/siujk/'.$siujk->filename;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $siujk->filename<>""){
                 unlink($file_path);
             }
 
@@ -175,7 +181,7 @@ class SiujkController extends Controller
         $vendor_id = $siujk->vendor_id;
         $file_path = public_path().'/documents/siujk/'.$siujk->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file  && $siujk->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

@@ -3,10 +3,7 @@
 @section('content')
 
 <style>
-        .anyClass {
-          overflow-x: scroll;
-        }
-        
+
   </style>
 
 <!-- Content Wrapper. Contains page content -->
@@ -38,90 +35,85 @@
               <i class="fa fa-times"></i></button>
           </div>
         </div>
-        <div class="box-body anyClass">
+        <div class="box-body">
           
           <!-- Content Here -->
+          
           
           <?php $No = 1; ?>
           
 
-            <table id="example1"  class="table table-bordered table-striped table-responsive">
-                <thead>
-                <tr>
-                  <th style="width:3%">No</th>
-                  <th style="width:18%">Nama</th>
-                  <th style="width:10%">Badan Usaha</th>
-                  <th style="width:10%">Kota</th>
-                  <th style="width:10%">Type</th>
-                  <th style="width:5%">Kualifikasi</th>
-                  <th style="width:10%">Status</th>
-                  <th style="width:14%">Bidang</th>
-                  <th style="width:10%">Nilai Evaluasi Tahun Terakhir</th>
-                  @role('admin')
-                    <th style="width:10%">Action</th>
-                  @endrole  
-                </tr>
-                </thead>
-                <tbody>
-                
-                @foreach($vendors as $row)  
-                <tr>
-                  <!-- <td>{{$row->id}}</td>  -->
-                  <td>{{$No}}</td>
-                  
-                  <!-- <td>{{$row->id}}</td> -->
-                  <td><a href="{{url('vendors',$row->id)}}">{{$row->nama}}</a></td>
-                  <td>{{$row->badan_usaha}}</td>
-                  <td>{{$row->kota}}</td>
-                  <td>{{$row->type}}</td>
-                  <td><center>{{$row->kualifikasi}}<center></td>
-                  <td>
-                    <center>
-                      <!-- {{$row->statuses->status}} -->
+          <table id="tbl_vendor"  class="table table-bordered table-striped">
+            <thead>
+            <tr>
+              <th >No</th>
+              <th style="width: 300px">Nama</th>
+              <th >Badan Usaha</th>
+              <th >Kota</th>
+              <th >Type</th>
+              <th >Kualifikasi</th>
+              <th >Status</th>
+              <th >Bidang</th>
+              <th >Nilai Evaluasi Tahun Terakhir</th>
+              @role('admin')
+                <th style="width: 100px" >Action</th>
+              @endrole  
+            </tr>
+            </thead>
 
-                            @if($row->statuses->status=="Pemasok Mampu")
-                              <span class="label label-success">{{$row->statuses->status}}</span>
-                            @elseif ($row->statuses->status=="Pemasok Baru")
-                              <span class="label label-primary">{{$row->statuses->status}}</span>
-                            @elseif ($row->statuses->status=="Suspended")
-                              <span class="label label-warning">{{$row->statuses->status}}</span>
-                            @elseif ($row->statuses->status=="Calon Pemasok")
-                              <span class="label label-info">{{$row->statuses->status}}</span>
-                            @elseif ($row->statuses->status=="Daftar Hitam")
-                              <span class="label label-danger">{{$row->statuses->status}}</span>
-                            @endif
-                    </center>
-                  </td>
-                  <?php $sub_bidang_jasa = $row->subjasas->first()->sub_bidang ?? "";
-                        $sub_bidang_barang = $row->subbarangs->first()->sub_bidang ?? "";
+            <tbody>
+    
+              @foreach($vendors as $row)  
+              <tr>
+                <!-- <td>{{$row->id}}</td>  -->
+                <td>{{$No}}</td>
+                <td><a href="{{url('vendors',$row->id)}}">{{$row->nama}}</a></td>
+                <td>{{$row->badan_usaha}}</td>
+                <td style="white-space: nowrap">{{$row->kota}}</td>
+                <td>{{$row->type}}</td>
+                <td><center>{{$row->kualifikasi}}<center></td>
+                <td>
+                  <center>
+                    <!-- {{$row->statuses->status}} -->
+          
+                          @if($row->statuses->status=="Pemasok Mampu")
+                            <span class="label label-success">{{$row->statuses->status}}</span>
+                          @elseif ($row->statuses->status=="Pemasok Baru")
+                            <span class="label label-primary">{{$row->statuses->status}}</span>
+                          @elseif ($row->statuses->status=="Suspended")
+                            <span class="label label-warning">{{$row->statuses->status}}</span>
+                          @elseif ($row->statuses->status=="Calon Pemasok")
+                            <span class="label label-info">{{$row->statuses->status}}</span>
+                          @elseif ($row->statuses->status=="Daftar Hitam")
+                            <span class="label label-danger">{{$row->statuses->status}}</span>
+                          @endif
+                  </center>  
+                </td>
 
-                        if ($sub_bidang_jasa == ""){ 
-                          $sub_bidang = $sub_bidang_barang;
-                        }else{
-                          $sub_bidang = $sub_bidang_jasa;
-                        } 
- 
-                  ?>
+                <?php $sub_bidang_jasa = $row->subjasas->first()->sub_bidang ?? "";
+                      $sub_bidang_barang = $row->subbarangs->first()->sub_bidang ?? "";
 
-                  <td><?php echo $sub_bidang; ?></td>
-                  <td>{{$row->evaluasis->first()->NTP ?? ""}} - {{$row->evaluasis->first()->rating ?? ""}}</td>
-                  @role('admin')
-                  <td>
-                    <a  href="{{route('vendors.edit',$row->id)}}" class="btn btn-primary pull-left" style="margin-right: 10px"><i class="fa fa-edit"></i></a>
+                      if ($sub_bidang_jasa == ""){ 
+                        $sub_bidang = $sub_bidang_barang;
+                      }else{
+                        $sub_bidang = $sub_bidang_jasa;
+                      } 
 
-                    
+                ?>
 
-                    <button type="submit" data-toggle="modal" onclick="deleteVendor({{$row->id}})" data-target="#DeleteModal" class="btn btn-danger"><i class="fa fa-trash"></i></button>
-                  </td>
-                  @endrole
-                </tr>
-                <?php $No++; ?>
-                @endforeach
-
-                </tbody>
-                
-              </table>
-
+                <td style="white-space: nowrap"><?php echo $sub_bidang; ?></td>
+                <td style="white-space: nowrap">{{$row->evaluasis->first()->NTP ?? ""}} - {{$row->evaluasis->first()->rating ?? ""}}</td>
+                @role('admin')
+                <td>
+                  <a  href="{{route('vendors.edit',$row->id)}}" class="btn btn-primary pull-left" style="margin-right: 10px"><i class="fa fa-edit"></i></a>
+                  <button type="submit" data-toggle="modal" onclick="deleteVendor({{$row->id}})" data-target="#DeleteModal" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                </td>
+                @endrole
+              </tr>
+              <?php $No++; ?>
+              @endforeach
+            </tbody>
+          </table>
 
           <!-- Content Here -->
         </div>
