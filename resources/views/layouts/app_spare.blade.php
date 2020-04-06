@@ -419,7 +419,14 @@
 
 <script>
   $(function () {
-    $('#example1').DataTable()
+    $('#tbl_vendor').DataTable(
+      {
+        'scrollX'     : true,
+      }
+    )
+    $('#example1').DataTable({
+      'scrollX'     : true,
+    })
     $('#example3').DataTable()
     $('#example2').DataTable({
       'paging'      : true,
@@ -439,10 +446,6 @@
       "pagingType"  : "full_numbers",
       'stateSave'   : true,
       "lengthMenu"  : [ 10, 25, 50, 75, 100 ],
-      
-      
-     
-      
     })
   })
 

@@ -47,33 +47,37 @@ class AktasController extends Controller
         'NamaNotaris' => 'required',
         'NomorAkta' => 'required',
         'TanggalAkta' => 'required',
-        'FileAkta' => 'required|mimes:pdf|max:2000',
+        'FileAkta' => 'mimes:pdf|max:12000',
         
         ]);
 
         // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('FileAkta');
-        $extension = $file->getClientOriginalExtension();
-        $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'akta';
+        $akta = new Akta;
+
+        if($request->hasFile('FileAkta')){
+            $file = $request->file('FileAkta');
+            $extension = $file->getClientOriginalExtension();
+            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'akta';
+            $fileName = md5(time()) . '.' . $extension;
+            // $fileName = $akta->getNextId();
+            $akta->filename = $fileName;
+            // upload file
+            $file->move($destination_folder,$fileName);
+        }
 
         $vendor_id = $request->input('vendor_id');
         $vendor_name = $request->input('vendor_name');
         $tgl_akta = $request->input('TanggalAkta');
-
         
-        $akta = new Akta;
         $akta->jenis = $request->input('JenisAkta');
         $akta->vendor_id = $vendor_id;
         $akta->nama_notaris = $request->input('NamaNotaris');
         $akta->nomor = $request->input('NomorAkta');
         $akta->tgl_akta = Carbon::parse($tgl_akta)->format('Y-m-d H:i:s');
 
-        $fileName = md5(time()) . '.' . $extension;
-        // $fileName = $akta->getNextId();
-        $akta->filename = $fileName;
         
-        // upload file
-        $file->move($destination_folder,$fileName);
+        
+        
 
         $akta->save();
         //return "store";
@@ -138,7 +142,7 @@ class AktasController extends Controller
             //Delete file yang sebelumnya
             $file_path = public_path().'/documents/akta/'.$akta->filename;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $akta->filename<>""){
                 unlink($file_path);
             }
 
@@ -168,7 +172,7 @@ class AktasController extends Controller
         $vendor_id = $akta->vendor_id;
         $file_path = public_path().'/documents/akta/'.$akta->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $akta->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

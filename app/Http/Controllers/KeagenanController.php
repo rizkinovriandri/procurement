@@ -48,21 +48,33 @@ class KeagenanController extends Controller
             'KeagenanBerlakuMulai' => 'required',
             //'KeagenanBerlakuSampai' => 'required',
             
-            'FileKeagenan' => 'required|mimes:pdf,jpg,jpeg,png|max:10000',
+            'FileKeagenan' => 'mimes:pdf,jpg,jpeg,png|max:10000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileKeagenan');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'keagenan';
-    
+            $keagenan = new Keagenan;
+
+            if($request->hasFile('FileKeagenan')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileKeagenan');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'keagenan';
+        
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $keagenan->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             $tgl_awal = $request->input('KeagenanBerlakuMulai');
             $tgl_akhir = $request->input('KeagenanBerlakuSampai');
     
-            $keagenan = new Keagenan;
+            
             $keagenan->nama_principle = $request->input('NamaPrinciple');
             $keagenan->vendor_id = $vendor_id;
             $keagenan->jenis_barang = $request->input('JenisBarang');
@@ -75,14 +87,6 @@ class KeagenanController extends Controller
                 $keagenan->tgl_berlaku_sampai = null;
             }
 
-    
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $keagenan->filename = $fileName;
-            
-            // upload file
-            $file->move($destination_folder,$fileName);
-    
             $keagenan->save();
             //return "store";
             return redirect('/vendors/'.$vendor_id)->with('success','Data keagenan berhasil disimpan');
@@ -125,7 +129,7 @@ class KeagenanController extends Controller
             'JenisBarang' => 'required',
             'KeagenanBerlakuMulai' => 'required',
             //'KeagenanBerlakuSampai' => 'required',
-            
+            'FileKeagenan' => 'mimes:pdf,jpg,jpeg,png|max:10000',
             //'FileKeagenan' => 'required|mimes:pdf,jpg,jpeg,png|max:10000',
             ]);
 
@@ -155,7 +159,7 @@ class KeagenanController extends Controller
                 //Delete file yang sebelumnya
                 $file_path = public_path().'/documents/keagenan/'.$keagenan->filename;
                 $check_file = File::exists($file_path);
-                if ($check_file){
+                if ($check_file && $keagenan->filename<>""){
                     unlink($file_path);
                 }
     
@@ -170,7 +174,6 @@ class KeagenanController extends Controller
                 $keagenan->save();
                 //dd($request->all());
                 return redirect('/vendors/'.$vendor_id)->with('success','Data Keagenan Updated');
-
     }
 
     /**
@@ -186,7 +189,7 @@ class KeagenanController extends Controller
         $vendor_id = $keagenan->vendor_id;
         $file_path = public_path().'/documents/keagenan/'.$keagenan->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file  && $keagenan->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

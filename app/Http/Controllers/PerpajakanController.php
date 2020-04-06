@@ -47,31 +47,37 @@ class PerpajakanController extends Controller
             
             'NomorDokumen' => 'required',
             'TahunPenerbitan' => 'required|numeric',
-            'FilePerpajakan' => 'required|mimes:pdf|max:2000',
+            'FilePerpajakan' => 'mimes:pdf|max:4000',
             
             ]);
+
+            $perpajakan = new Perpajakan;
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FilePerpajakan');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'perpajakan';
+            if($request->hasFile('FilePerpajakan')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FilePerpajakan');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'perpajakan';
     
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $perpajakan->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+
+            }
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
     
-            $perpajakan = new Perpajakan;
+            
             
             $perpajakan->vendor_id = $vendor_id;
             $perpajakan->jenis_dokumen = $request->input('JenisDokumen');
             $perpajakan->nomor_dokumen = $request->input('NomorDokumen');
             $perpajakan->tahun = $request->input('TahunPenerbitan');
     
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $perpajakan->filename = $fileName;
             
-            // upload file
-            $file->move($destination_folder,$fileName);
     
             $perpajakan->save();
             //return "store";
@@ -114,7 +120,7 @@ class PerpajakanController extends Controller
             
             'NomorDokumen' => 'required',
             'TahunPenerbitan' => 'required|numeric',
-            
+            'FilePerpajakan' => 'mimes:pdf|max:4000',
             ]);
 
             $perpajakan = Perpajakan::find($request->id_perpajakan);
@@ -132,7 +138,7 @@ class PerpajakanController extends Controller
                 //Delete file yang sebelumnya
                 $file_path = public_path().'/documents/perpajakan/'.$perpajakan->filename;
                 $check_file = File::exists($file_path);
-                if ($check_file){
+                if ($check_file && $perpajakan->filename<>""){
                     unlink($file_path);
                 }
     
@@ -163,7 +169,7 @@ class PerpajakanController extends Controller
         $vendor_id = $perpajakan->vendor_id;
         $file_path = public_path().'/documents/perpajakan/'.$perpajakan->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $perpajakan->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

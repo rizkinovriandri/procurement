@@ -45,11 +45,12 @@ class PengurusController extends Controller
          $validatedData = $request->validate([
             'Nama' => 'required',
             'Jabatan' => 'required',
-            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:2000',
+            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:8000',
             ]);
     
             // menyimpan data file yang diupload ke variabel $file
 
+            $pengurus = new Pengurus;
             // menyimpan data file yang diupload ke variabel $file
             if($request->hasFile('PhotoPengurus')){ 
                 $file = $request->file('PhotoPengurus');
@@ -69,7 +70,7 @@ class PengurusController extends Controller
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
     
-            $pengurus = new Pengurus;
+            
             $pengurus->nama = $request->input('Nama');
             $pengurus->vendor_id = $vendor_id;
             $pengurus->jabatan = $request->input('Jabatan');
@@ -120,7 +121,7 @@ class PengurusController extends Controller
         $this->validate($request, [
             'Nama' => 'required',
             'Jabatan' => 'required',
-            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:2000',
+            'PhotoPengurus' => 'mimes:jpeg,bmp,png|max:8000',
         ]);
 
 
@@ -141,7 +142,7 @@ class PengurusController extends Controller
             //Delete file yang sebelumnya
             $file_path = public_path().'/documents/pengurus/'.$pengurus->filename;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $pengurus->filename<>""){
                 unlink($file_path);
             }
 
@@ -172,7 +173,7 @@ class PengurusController extends Controller
 
         $file_path = public_path().'/documents/pengurus/'.$pengurus->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $pengurus->filename<>""){
             unlink($file_path);
         }
 

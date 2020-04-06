@@ -46,20 +46,28 @@ class LapkeuController extends Controller
             'NilaiAsset' => 'required',
             'NilaiPenjualan' => 'required',
             'TahunLaporan' => 'required|numeric',
-            'FileLapkeu' => 'required|mimes:pdf|max:2000',
+            'FileLapkeu' => 'mimes:pdf|max:6000',
             
             ]);
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileLapkeu');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'lapkeu';
-    
+            $lapkeu = new Lapkeu;
+
+            if($request->hasFile('FileLapkeu')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileLapkeu');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'lapkeu';
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $lapkeu->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+            }
+
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
     
-            $lapkeu = new Lapkeu;
-            
             $lapkeu->vendor_id = $vendor_id;
             
             $lapkeu->cur_nilai_asset = $request->input('CurNilaiAsset');
@@ -67,14 +75,7 @@ class LapkeuController extends Controller
             $lapkeu->cur_nilai_penjualan = $request->input('CurNilaiPenjualan');
             $lapkeu->nilai_penjualan = $request->input('NilaiPenjualan');
             $lapkeu->tahun = $request->input('TahunLaporan');
-    
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $lapkeu->filename = $fileName;
-            
-            // upload file
-            $file->move($destination_folder,$fileName);
-    
+        
             $lapkeu->save();
             //return "store";
             return redirect('/vendors/'.$vendor_id)->with('success','Laporan Keuangan berhasil disimpan');
@@ -117,6 +118,7 @@ class LapkeuController extends Controller
             'NilaiAsset' => 'required',
             'NilaiPenjualan' => 'required',
             'TahunLaporan' => 'required|numeric',
+            'FileLapkeu' => 'mimes:pdf|max:6000',
             ]);
 
             $lapkeu = Lapkeu::find($request->id_lapkeu);
@@ -136,7 +138,7 @@ class LapkeuController extends Controller
                 //Delete file yang sebelumnya
                 $file_path = public_path().'/documents/lapkeu/'.$lapkeu->filename;
                 $check_file = File::exists($file_path);
-                if ($check_file){
+                if ($check_file && $lapkeu->filename<>""){
                     unlink($file_path);
                 }
     
@@ -168,7 +170,7 @@ class LapkeuController extends Controller
         $vendor_id = $lapkeu->vendor_id;
         $file_path = public_path().'/documents/lapkeu/'.$lapkeu->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $lapkeu->filename<>""){
             unlink($file_path);
         }
         //File::delete($file_path);

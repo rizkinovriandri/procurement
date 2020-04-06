@@ -48,21 +48,32 @@ class SertifikatController extends Controller
             'InstansiPenerbit' => 'required',
             'BerlakuMulai' => 'required',
             
-            'FileSertifikat' => 'required|mimes:pdf|max:2000',
+            'FileSertifikat' => 'mimes:pdf|max:4000',
             
             ]);
+
+            $sertifikat = new Sertifikat;
     
-            // menyimpan data file yang diupload ke variabel $file
-            $file = $request->file('FileSertifikat');
-            $extension = $file->getClientOriginalExtension();
-            $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'sertifikat';
-    
+            if($request->hasFile('FileSertifikat')){
+                // menyimpan data file yang diupload ke variabel $file
+                $file = $request->file('FileSertifikat');
+                $extension = $file->getClientOriginalExtension();
+                $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'sertifikat';
+                
+                $fileName = md5(time()) . '.' . $extension;;
+                // $fileName = $akta->getNextId();
+                $sertifikat->filename = $fileName;
+                
+                // upload file
+                $file->move($destination_folder,$fileName);
+
+            }
             $vendor_id = $request->input('vendor_id');
             $vendor_name = $request->input('vendor_name');
             $tgl_awal = $request->input('BerlakuMulai');
             $tgl_akhir = $request->input('BerlakuSampai');
     
-            $sertifikat = new Sertifikat;
+            
             $sertifikat->type = $request->input('JenisSertifikat');
             $sertifikat->vendor_id = $vendor_id;
             $sertifikat->nomor = $request->input('NomorSertifikat');
@@ -70,13 +81,6 @@ class SertifikatController extends Controller
             $sertifikat->instansi_penerbit = $request->input('InstansiPenerbit');
             $sertifikat->tgl_terbit = Carbon::parse($tgl_awal)->format('Y-m-d H:i:s');
             $sertifikat->tgl_kadaluarsa = Carbon::parse($tgl_akhir)->format('Y-m-d H:i:s');
-    
-            $fileName = md5(time()) . '.' . $extension;;
-            // $fileName = $akta->getNextId();
-            $sertifikat->filename = $fileName;
-            
-            // upload file
-            $file->move($destination_folder,$fileName);
     
             $sertifikat->save();
             //return "store";
@@ -120,7 +124,7 @@ class SertifikatController extends Controller
             'NamaSertifikat' => 'required',
             'InstansiPenerbit' => 'required',
             'BerlakuMulai' => 'required',
-            
+            'FileSertifikat' => 'mimes:pdf|max:4000',
             ]);
 
             $tgl_awal = $request->input('BerlakuMulai');
@@ -146,7 +150,7 @@ class SertifikatController extends Controller
                 //Delete file yang sebelumnya
                 $file_path = public_path().'/documents/sertifikat/'.$sertifikat->filename;
                 $check_file = File::exists($file_path);
-                if ($check_file){
+                if ($check_file && $sertifikat->filename){
                     unlink($file_path);
                 }
     
@@ -176,7 +180,7 @@ class SertifikatController extends Controller
         $vendor_id = $sertifikat->vendor_id;
         $file_path = public_path().'/documents/sertifikat/'.$sertifikat->filename;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $sertifikat->filename){
             unlink($file_path);
         }
         //File::delete($file_path);

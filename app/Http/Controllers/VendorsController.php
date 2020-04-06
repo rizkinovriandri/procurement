@@ -10,7 +10,7 @@ use App\role_user;
 use App\Vendor;
 use Auth;
 use App\Http\Requests\StoreVendorRequest;
-use File;
+use Illuminate\Support\Facades\File;
 use DB;
 
 class VendorsController extends Controller
@@ -100,26 +100,29 @@ class VendorsController extends Controller
             'negara' => 'required',
             'KodePos' => 'required | numeric',
             'Telepon1' => 'required',
-            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:2000',
+            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:8000',
             ]);
 
         // menyimpan data file yang diupload ke variabel $file
+
+        $vendor = new Vendor;
+
         if($request->hasFile('PhotoKantor')){
             $file = $request->file('PhotoKantor');
             $extension = $file->getClientOriginalExtension();
             $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'kantor';
-
+            
             $fileName = md5(time()) . '.' . $extension;
+            //echo $fileName;
             // $fileName = $akta->getNextId();
             $vendor->filekantor = $fileName;
-                
             // upload file
             $file->move($destination_folder,$fileName);
         }
        
         $tempkeluarga = $request->input('keluarga');
 
-        $vendor = new Vendor;
+        
         $vendor->nama = $request->input('NamaPerusahaan');
         $vendor->badan_usaha = $request->input('BadanUsaha');
         $vendor->alamat = $request->input('alamat');
@@ -139,6 +142,7 @@ class VendorsController extends Controller
         $vendor->k3l = $request->input('k3l');
         $vendor->hubungan_keluarga = $request->input('keluarga');
         $vendor->keterangan = $request->input('keterangan');
+        
 
          if ($tempkeluarga == 1) {
             $vendor->nama_keluarga = $request->input('nama_pegawai');
@@ -208,7 +212,7 @@ class VendorsController extends Controller
             'negara' => 'required',
             'KodePos' => 'required | numeric',
             'Telepon1' => 'required',
-            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:2000',
+            'PhotoKantor' => 'mimes:jpeg,bmp,png|max:8000',
 
         ]);
         
@@ -258,10 +262,11 @@ class VendorsController extends Controller
             $extension = $file->getClientOriginalExtension();
             $destination_folder = public_path() . DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'kantor';
 
-            //Delete file yang sebelumnya
-            $file_path = public_path().'/documents/kantor/'.$vendor->filekantor;
+            //Delete file yang sebelumnya jika ada
+            $file_path = public_path(). DIRECTORY_SEPARATOR . 'documents' . DIRECTORY_SEPARATOR .'kantor'. DIRECTORY_SEPARATOR . $vendor->filekantor;
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $vendor->filekantor<>"") {
+                //echo $file_path;
                 unlink($file_path);
             }
 
@@ -299,7 +304,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $akta->filename<>""){
                 unlink($file_path);
             }
          }
@@ -312,7 +317,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $skkem->filename<>""){
                 unlink($file_path);
             }
          }
@@ -325,7 +330,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $siup->filename<>""){
                 unlink($file_path);
             }
          }
@@ -338,7 +343,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $tdp->filename<>""){
                 unlink($file_path);
             }
          }
@@ -351,7 +356,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $siujk->filename<>""){
                 unlink($file_path);
             }
          }
@@ -364,7 +369,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $api->filename<>""){
                 unlink($file_path);
             }
          }
@@ -381,7 +386,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $rekening->filename<>""){
                 unlink($file_path);
             }
          }
@@ -398,7 +403,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $lapkeu->filename <> ""){
                 unlink($file_path);
             }
          }
@@ -411,7 +416,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $perpajakan->filename<>""){
                 unlink($file_path);
             }
          }
@@ -428,7 +433,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $keagenan->filename<>""){
                 unlink($file_path);
             }
          }
@@ -445,7 +450,7 @@ class VendorsController extends Controller
             //echo $file_path . "<br/>";
 
             $check_file = File::exists($file_path);
-            if ($check_file){
+            if ($check_file && $sertifikat->filename<>""){
                 unlink($file_path);
             }
          }
@@ -467,7 +472,7 @@ class VendorsController extends Controller
 
         $file_path = public_path().'/documents/kantor/'.$vendor->filekantor;
         $check_file = File::exists($file_path);
-        if ($check_file){
+        if ($check_file && $vendor->filekantor<>""){
             unlink($file_path);
         }
 
